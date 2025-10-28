@@ -36,7 +36,7 @@ def get_user_by_email(email: str):
     records = ws.get_all_records()
 
     for row in records:
-        if row["email"].lower() == email.lower():
+        if row["email"].strip().lower() == email.strip().lower():
             return row
     return None
 
