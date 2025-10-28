@@ -1,6 +1,14 @@
 """
-password hashing utilities
+auth.py
+-------
+Authentication and password control.
+
+Responsible for:
+- Secure password hashing using bcrypt.
+- User signup and login functions connected to Google Sheets.
+- Fetch existing users by email.
 """
+
 
 import bcrypt
 from .sheets_gateway import get_client, get_sheet
@@ -70,4 +78,3 @@ def login(email: str, password: str) -> bool:
     else:
         print("Incorrect password.")
         return False
-      
