@@ -1,0 +1,1 @@
+(Get-Content -Raw 'python_scripts/budget_planner/index.py') | % { [int][0] }; Get-Content -Path 'python_scripts/budget_planner/index.py' -Raw | Set-Content -Path 'index_copy.txt' ; gc -Path 'python_scripts/budget_planner/index.py' -TotalCount 50 -Raw | % {  }
