@@ -51,5 +51,23 @@ def signup(email: str, password: str) -> bool:
     next_id = len(ws.get_all_values())
 
     ws.append_row([next_id, email, hashed_pw, created_at])
-    print(f"✅ User {email} registered successfully.")
+    print(f" User {email} registered successfully.")
     return True
+
+
+def login(email: str, password: str) -> bool:
+    """
+    Authenticate a user by checking stored hash.
+    """
+    user = get_user_by_email(email)
+    if not user:
+        print("No account found for this email.")
+        return False
+
+    if verify_password(password, user["password_hash"]):
+        print("Login successful.")
+        return True
+    else:
+        print("Incorrect password.")
+        return False
+      
