@@ -4,6 +4,7 @@ password hashing utilities
 
 import bcrypt
 from .sheets_gateway import get_client, get_sheet
+from datetime import datetime
 
 
 def hash_password(password: str) -> str:
@@ -30,3 +31,25 @@ def get_user_by_email(email: str):
         if row["email"].lower() == email.lower():
             return row
     return None
+
+
+def signup(email: str, password: str) -> bool:
+    """
+    Register a new user in the 'users' worksheet.
+    """
+    client = get_client()
+    sheet = get_sheet(client)
+    ws = sheet.worksheet("users")
+
+    existing = get_user_by_email(email)
+    if existing:
+        print("Email already registered.")
+        return False
+
+    hashed_pw = hash_password(password)
+    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    next_id = len(ws.get_all_values())
+
+    ws.append_row([next_id, email, hashed_pw, created_at])
+    print(f"✅ User {email} registered successfully.")
+    return True
