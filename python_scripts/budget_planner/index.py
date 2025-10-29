@@ -82,6 +82,35 @@ def cli_login(
         raise typer.Exit(code=1)
 
 
+@app.command("whoami")
+def cli_whoami(
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        prompt="Email",
+        help="Account email to look up.",
+    ),
+) -> None:
+    """
+    Show basic details for a user by email.
+    """
+    try:
+        user = auth.get_user_by_email(email)
+        if not user:
+            typer.secho(
+                "No account found for that email.",
+                fg=typer.colors.RED,
+            )
+            raise typer.Exit(code=1)
+
+        typer.echo(f"user_id   : {user.get('user_id')}")
+        typer.echo(f"email     : {user.get('email')}")
+        typer.echo(f"created_at: {user.get('created_at')}")
+    except Exception as exc:
+        typer.secho(f"Lookup failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
