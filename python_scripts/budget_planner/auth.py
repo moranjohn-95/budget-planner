@@ -28,7 +28,7 @@ def verify_password(password: str, hashed: str) -> bool:
 
 def get_user_by_email(email: str):
     """
-    Retrieve a user record by email from the 'users' worksheet.
+    Retrieve a user by email from the users worksheet.
     """
     client = get_client()
     sheet = get_sheet(client)
