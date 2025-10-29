@@ -50,6 +50,38 @@ def cli_signup(
         raise typer.Exit(code=1)
 
 
+@app.command("login")
+def cli_login(
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        prompt="Email",
+        help="Account email.",
+    ),
+    password: Optional[str] = typer.Option(
+        None,
+        "--password",
+        prompt=True,
+        hide_input=True,
+        help="Account password.",
+    ),
+) -> None:
+    """Verify credentials against the stored bcrypt hash."""
+    try:
+        ok = auth.login(email=email, password=password)
+        if ok:
+            typer.secho("Login successful", fg=typer.colors.GREEN)
+        else:
+            typer.secho(
+                "Invalid email or password",
+                fg=typer.colors.RED,
+            )
+            raise typer.Exit(code=1)
+    except Exception as exc:
+        typer.secho(f"Login failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
