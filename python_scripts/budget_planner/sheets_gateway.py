@@ -63,17 +63,30 @@ def get_client() -> gspread.Client:
     """
     Return an authorized gspread client
     """
-    load_dotenv()  # ensure .env is loaded
+    load_dotenv()
     creds = _credentials_from_env()
     return gspread.authorize(creds)
 
 
 def get_sheet(client: Optional[gspread.Client] = None) -> gspread.Spreadsheet:
     """
-    Open and return the spreadsheet specified by SHEET_ID.
+    Open and return the spreadsheet specified using SHEET_ID.
     """
     client = client or get_client()
     sheet_id = os.getenv("SHEET_ID")
     if not sheet_id:
         raise RuntimeError("SHEET_ID is missing. Add it to your .env file.")
     return client.open_by_key(sheet_id)
+
+
+def verify_connection() -> None:
+    """
+    Test Google Sheets connectivity and print sheet title if successful.
+    """
+    try:
+        client = get_client()
+        sheet = get_sheet(client)
+        print(f"Connected successfully to: {sheet.title}")
+    except Exception as exc:
+        print(f"Connection failed: {exc}")
+        raise
