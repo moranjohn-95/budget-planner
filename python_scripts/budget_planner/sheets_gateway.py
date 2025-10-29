@@ -91,6 +91,3 @@ def verify_connection() -> None:
         print(f"Connection failed: {exc}")
         raise
 
-
-if __name__ == "__main__":
-    verify_connection()
