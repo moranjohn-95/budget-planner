@@ -3,6 +3,7 @@ import json
 import gspread
 from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
+from python_scripts.budget_planner.sheets_gateway import verify_connection
 
 
 def load_scopes():
@@ -32,16 +33,35 @@ def main():
     client = gspread.authorize(creds)
 
     sh = client.open_by_key(sheet_id)
-    ws = sh.sheet1  # first tab
+    ws = sh.sheet1
     first_row = ws.row_values(1)
     print("Connected to:", sh.title)
     print("Sheet1 row1:", first_row)
 
-    # optional write test (comment out if using readonly scope)
     ws.append_row(["hello", "from", "test_sheets.py"],
                   value_input_option="USER_ENTERED")
     print("Append OK.")
 
 
+def verify_only() -> None:
+    """Run the gateway connectivity check and exit."""
+    verify_connection()
+
+
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Manual Google Sheets tests."
+    )
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        help="Only verify connectivity and exit.",
+    )
+    args = parser.parse_args()
+
+    if args.verify:
+        verify_only()
+    else:
+        main()
