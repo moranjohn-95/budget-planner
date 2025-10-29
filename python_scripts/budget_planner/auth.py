@@ -9,7 +9,7 @@ Responsible for:
 - Fetch existing users by email.
 """
 
-
+import uuid
 import bcrypt
 from .sheets_gateway import get_client, get_sheet
 from datetime import datetime
@@ -49,16 +49,23 @@ def signup(email: str, password: str) -> bool:
     sheet = get_sheet(client)
     ws = sheet.worksheet("users")
 
+    email = email.strip().lower()
     existing = get_user_by_email(email)
     if existing:
         print("Email already registered.")
         return False
 
+    if len(password) < 6:
+        print("Password must be at least 6 characters long.")
+        return False
+
     hashed_pw = hash_password(password)
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    next_id = len(ws.get_all_values())
 
-    ws.append_row([next_id, email, hashed_pw, created_at])
+    # UUID is used for greater secuirty and safety
+    user_id = str(uuid.uuid4())
+
+    ws.append_row([user_id, email, hashed_pw, created_at])
     print(f" User {email} registered successfully.")
     return True
 
