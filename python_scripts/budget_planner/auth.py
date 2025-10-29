@@ -13,6 +13,10 @@ import uuid
 import bcrypt
 from .sheets_gateway import get_client, get_sheet
 from datetime import datetime
+from ..utilities.validation import (
+    normalize_email,
+    require_nonempty,
+)
 
 
 def hash_password(password: str) -> str:
@@ -28,15 +32,17 @@ def verify_password(password: str, hashed: str) -> bool:
 
 def get_user_by_email(email: str):
     """
-    Retrieve a user by email from the users worksheet.
+    Retrieve a user by email from the 'users' worksheet.
+    Ensure email is normalised for case-insensitive match.
     """
     client = get_client()
     sheet = get_sheet(client)
     ws = sheet.worksheet("users")
-    records = ws.get_all_records()
 
+    email_norm = normalize_email(email)
+    records = ws.get_all_records()
     for row in records:
-        if row["email"].strip().lower() == email.strip().lower():
+        if row.get("email", "").strip().lower() == email_norm:
             return row
     return None
 
@@ -45,6 +51,9 @@ def signup(email: str, password: str) -> bool:
     """
     Register a new user in the 'users' worksheet.
     """
+    email = normalize_email(require_nonempty(email, "Email"))
+    password = require_nonempty(password, "Password")
+
     client = get_client()
     sheet = get_sheet(client)
     ws = sheet.worksheet("users")
@@ -74,6 +83,9 @@ def login(email: str, password: str) -> bool:
     """
     Authenticate a user by checking stored hash.
     """
+    email = normalize_email(require_nonempty(email, "Email"))
+    password = require_nonempty(password, "Password")
+
     user = get_user_by_email(email)
     if not user:
         print("No account found for this email.")
