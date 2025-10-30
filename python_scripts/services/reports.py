@@ -11,6 +11,7 @@ from datetime import datetime
 
 from ..budget_planner.sheets_gateway import get_client, get_sheet
 from ..budget_planner import auth
+from ..services import reports
 
 TRANSACTIONS_SHEET = "transactions"
 TRANSACTIONS_HEADERS: List[str] = [
