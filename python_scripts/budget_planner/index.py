@@ -13,12 +13,6 @@ def _root(ctx: typer.Context) -> None:
         typer.echo("Budget Planner CLI is ready. Use --help or a subcommand.")
 
 
-@app.command("hello")
-def hello() -> None:
-    """Print a confirmation that the CLI is reachable."""
-    typer.echo("Budget Planner is ready!")
-
-
 @app.command("signup")
 def cli_signup(
     email: Optional[str] = typer.Option(
@@ -34,9 +28,37 @@ def cli_signup(
         hide_input=True,
         help="Password for the new account.",
     ),
+    confirm: Optional[str] = typer.Option(
+        None,
+        "--confirm",
+        prompt="Confirm password",
+        hide_input=True,
+        help="Confirm the password.",
+    ),
 ) -> None:
-    """Create a new user record in Google Sheets."""
+    """
+    Create a new user record in Google Sheets.
+
+    Basic CLI validation:
+    - Ensure password is correct and confirm it must match
+    - Ensure password must be at least 6 chars
+    """
     try:
+        if password is None or confirm is None:
+            typer.secho("Password is required.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+
+        if password != confirm:
+            typer.secho("Passwords do not match.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+
+        if len(password) < 6:
+            typer.secho(
+                "Password must be at least 6 characters.",
+                fg=typer.colors.RED,
+            )
+            raise typer.Exit(code=1)
+
         ok = auth.signup(email=email, password=password)
         if ok:
             typer.secho("Signup successful", fg=typer.colors.GREEN)
@@ -45,6 +67,7 @@ def cli_signup(
                 "Signup failed (maybe email exists?)",
                 fg=typer.colors.RED,
             )
+            raise typer.Exit(code=1)
     except Exception as exc:
         typer.secho(f"Error: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
