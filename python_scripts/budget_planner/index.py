@@ -181,6 +181,7 @@ def cli_add_txn(
         None,
         "--category",
         prompt=f"Category ({', '.join(ALLOWED_CATEGORIES)})",
+        type=typer.Choice(ALLOWED_CATEGORIES, case_sensitive=False),
         help="Transaction category. Must be one of the allowed values.",
     ),
     amount: Optional[float] = typer.Option(
