@@ -122,18 +122,15 @@ def list_transactions(
     ws = sheet.worksheet(TRANSACTIONS_SHEET)
 
     _ensure_txn_sheet(ws)
-    rows = ws.get_all_records()  # list[dict] with header keys
+    rows = ws.get_all_records()
 
-    # Filter by user (via user_id) if email is provided
     if email:
         user_id = _resolve_user_id(email)
         rows = [r for r in rows if str(r.get("user_id")) == user_id]
 
-    # Filter by date if provided
     if date:
         rows = [r for r in rows if str(r.get("date")) == date]
 
-    # Sort newest first by created_at (only if present, else keep order)
     if rows and "created_at" in rows[0]:
         rows.sort(key=lambda r: r.get("created_at", ""), reverse=True)
 

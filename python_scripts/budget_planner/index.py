@@ -2,7 +2,7 @@ from typing import Optional
 
 import typer
 from . import auth
-from ..services import transactions
+from python_scripts.services import transactions as tx
 
 app = typer.Typer(no_args_is_help=True, help="Budget Planner CLI")
 
@@ -202,7 +202,7 @@ def cli_add_txn(
             typer.secho("Amount is required.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
 
-        txn_id = transactions.add_transaction(
+        txn_id = tx.add_transaction(
             email=email,
             date=date,
             category=category,
@@ -214,6 +214,51 @@ def cli_add_txn(
     except Exception as exc:
         typer.secho(f"Add transaction failed: {exc}",
                     fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
+@app.command("list-txns")
+def cli_list_txns(
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        help="Filter to this account's transactions.",
+    ),
+    date: Optional[str] = typer.Option(
+        None,
+        "--date",
+        help="Filter by date (YYYY-MM-DD).",
+    ),
+    limit: int = typer.Option(
+        20,
+        "--limit",
+        min=1,
+        help="Max rows to show (default 20).",
+    ),
+) -> None:
+    """
+    Show recent transactions with optional filters.
+    """
+    try:
+        rows = tx.list_transactions(
+            email=email,
+            date=date,
+            limit=limit,
+        )
+        if not rows:
+            typer.echo("No transactions found.")
+            return
+
+        # Simple table-like output, one row per line
+        for r in rows:
+            line = (
+                f"{r.get('txn_id')} | {r.get('date')} | "
+                f"{r.get('category')} | {r.get('amount')} | "
+                f"{r.get('note')}"
+            )
+            typer.echo(line)
+    except Exception as exc:
+        typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
 
