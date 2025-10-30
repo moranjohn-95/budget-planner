@@ -17,6 +17,7 @@ from datetime import datetime
 from ..budget_planner.sheets_gateway import get_client, get_sheet
 
 from ..budget_planner import auth
+from ..utilities.constants import ALLOWED_CATEGORIES
 
 TRANSACTIONS_SHEET = "transactions"
 TRANSACTIONS_HEADERS: List[str] = [
@@ -89,6 +90,12 @@ def add_transaction(
 
     if amount == 0.0:
         raise ValueError("Amount cannot be zero.")
+
+    if category.lower() not in ALLOWED_CATEGORIES:
+        raise ValueError(
+            f"Invalid category '{category}'. "
+            f"Allowed: {', '.join(ALLOWED_CATEGORIES)}"
+        )
 
     user_id = _resolve_user_id(email)
     client = get_client()
