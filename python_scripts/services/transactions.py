@@ -103,3 +103,38 @@ def add_transaction(
 
     ws.append_row(row, value_input_option="USER_ENTERED")
     return txn_id
+
+
+def list_transactions(
+    *,
+    email: str | None = None,
+    date: str | None = None,
+    limit: int = 20,
+) -> list[dict]:
+    """
+    Return recent transactions with optional filters:
+    - email: only this user's transactions
+    - date : exact YYYY-MM-DD match
+    - limit: max number of rows (default 20)
+    """
+    client = get_client()
+    sheet = get_sheet(client)
+    ws = sheet.worksheet(TRANSACTIONS_SHEET)
+
+    _ensure_txn_sheet(ws)
+    rows = ws.get_all_records()  # list[dict] with header keys
+
+    # Filter by user (via user_id) if email is provided
+    if email:
+        user_id = _resolve_user_id(email)
+        rows = [r for r in rows if str(r.get("user_id")) == user_id]
+
+    # Filter by date if provided
+    if date:
+        rows = [r for r in rows if str(r.get("date")) == date]
+
+    # Sort newest first by created_at (only if present, else keep order)
+    if rows and "created_at" in rows[0]:
+        rows.sort(key=lambda r: r.get("created_at", ""), reverse=True)
+
+    return rows[: max(0, int(limit))]
