@@ -97,3 +97,20 @@ def login(email: str, password: str) -> bool:
     else:
         print("Incorrect password.")
         return False
+
+
+def list_users(limit: int = 20) -> list[dict]:
+    """
+    Added to return user records from the 'users' worksheet.
+
+    To be included:
+    'user_id', 'email', 'password_hash', 'created_at'.
+    """
+    client = get_client()
+    sheet = get_sheet(client)
+    ws = sheet.worksheet("users")
+
+    records = ws.get_all_records()
+    if limit and limit > 0:
+        return records[:limit]
+    return records
