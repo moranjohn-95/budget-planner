@@ -2,6 +2,7 @@ from typing import Optional
 
 import typer
 from . import auth
+from ..services import transactions
 
 app = typer.Typer(no_args_is_help=True, help="Budget Planner CLI")
 
@@ -157,6 +158,62 @@ def cli_list_users(
             typer.echo(f"- {email} | {created}")
     except Exception as exc:
         typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
+@app.command("add-txn")
+def cli_add_txn(
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        prompt="Email",
+        help="Account email to attach the transaction to.",
+    ),
+    date: Optional[str] = typer.Option(
+        None,
+        "--date",
+        prompt="Date (YYYY-MM-DD)",
+        help="Transaction date in YYYY-MM-DD format.",
+    ),
+    category: Optional[str] = typer.Option(
+        None,
+        "--category",
+        prompt="Category",
+        help="Category label (example, Groceries).",
+    ),
+    amount: Optional[float] = typer.Option(
+        None,
+        "--amount",
+        prompt="Amount",
+        help="Transaction amount (e.g., 12.50).",
+    ),
+    note: Optional[str] = typer.Option(
+        "",
+        "--note",
+        prompt="Note (optional)",
+        help="Optional note for this transaction.",
+    ),
+) -> None:
+    """
+    Add a new transaction row to the 'transactions' sheet.
+    """
+    try:
+        if amount is None:
+            typer.secho("Amount is required.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+
+        txn_id = transactions.add_transaction(
+            email=email,
+            date=date,
+            category=category,
+            amount=amount,
+            note=note or "",
+        )
+        typer.secho(f"Transaction recorded: {txn_id}",
+                    fg=typer.colors.GREEN)
+    except Exception as exc:
+        typer.secho(f"Add transaction failed: {exc}",
+                    fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
 
