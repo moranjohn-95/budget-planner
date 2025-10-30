@@ -64,7 +64,7 @@ def cli_signup(
             typer.secho("Signup successful", fg=typer.colors.GREEN)
         else:
             typer.secho(
-                "Signup failed (maybe email exists?)",
+                "Signup failed (already signed up?)",
                 fg=typer.colors.RED,
             )
             raise typer.Exit(code=1)
