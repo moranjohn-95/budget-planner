@@ -91,11 +91,10 @@ def add_transaction(
     if amount == 0.0:
         raise ValueError("Amount cannot be zero.")
 
-    if category.lower() not in ALLOWED_CATEGORIES:
-        raise ValueError(
-            f"Invalid category '{category}'. "
-            f"Allowed: {', '.join(ALLOWED_CATEGORIES)}"
-        )
+    category_norm = (category or "").strip().lower()
+    if category_norm not in ALLOWED_CATEGORIES:
+        allowed = ", ".join(ALLOWED_CATEGORIES)
+        raise ValueError(f"Invalid category '{category}'. Allowed: {allowed}")
 
     user_id = _resolve_user_id(email)
     client = get_client()
@@ -106,7 +105,7 @@ def add_transaction(
 
     txn_id = str(uuid.uuid4())
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    row = [txn_id, user_id, date, category, amount, note, created_at]
+    row = [txn_id, user_id, date, category_norm, amount, note, created_at]
 
     ws.append_row(row, value_input_option="USER_ENTERED")
     return txn_id

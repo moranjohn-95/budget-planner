@@ -5,6 +5,7 @@ from . import auth
 from python_scripts.services import transactions as tx
 from ..services import reports
 from ..utilities.constants import ALLOWED_CATEGORIES
+from click import Choice
 
 app = typer.Typer(no_args_is_help=True, help="Budget Planner CLI")
 
@@ -181,7 +182,7 @@ def cli_add_txn(
         None,
         "--category",
         prompt="Category",
-        type=typer.Choice(ALLOWED_CATEGORIES, case_sensitive=False),
+        type=Choice(ALLOWED_CATEGORIES, case_sensitive=False),
         help="Transaction category (must be one of the allowed categories).",
     ),
     amount: Optional[float] = typer.Option(
