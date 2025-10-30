@@ -263,6 +263,35 @@ def cli_list_txns(
         raise typer.Exit(code=1)
 
 
+@app.command("sum-month")
+def cli_sum_month(
+    month: Optional[str] = typer.Option(
+        None,
+        "--month",
+        prompt="Month (YYYY-MM)",
+        help="Month to summarise, example, 2025-10.",
+    ),
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        help="Option to filter.",
+    ),
+) -> None:
+    """
+    Print the total amount for the given month.
+    Option to filter for a single account email.
+    """
+    try:
+        total = reports.monthly_total(month=month, email=email)
+        if email:
+            typer.echo(f"Total for {month} ({email}): {total}")
+        else:
+            typer.echo(f"Total for {month}: {total}")
+    except Exception as exc:
+        typer.secho(f"Report failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
