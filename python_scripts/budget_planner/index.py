@@ -134,6 +134,32 @@ def cli_whoami(
         raise typer.Exit(code=1)
 
 
+@app.command("list-users")
+def cli_list_users(
+    limit: int = typer.Option(
+        10,
+        "--limit",
+        help="Max number of users to display",
+    )
+) -> None:
+    """
+    Produce list of users (email + created_at).
+    """
+    try:
+        rows = auth.list_users(limit=limit)
+        if not rows:
+            typer.echo("No users found.")
+            return
+
+        for row in rows:
+            email = row.get("email", "")
+            created = row.get("created_at", "")
+            typer.echo(f"- {email} | {created}")
+    except Exception as exc:
+        typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
