@@ -366,6 +366,49 @@ def cli_list_goals() -> None:
         raise typer.Exit(code=1)
 
 
+@app.command("budget-status")
+def cli_budget_status(
+    email: str = typer.Option(
+        "",
+        "--email",
+        help="Filter spend to a single account.",
+    ),
+    month: str = typer.Option(
+        "",
+        "--month",
+        help="Filter by month (YYYY-MM)- optional.",
+    ),
+) -> None:
+    """
+    Compare goals to spend. Shows category, goal, spent, and difference.
+    """
+    try:
+        rows = bud.goals_vs_spend(
+            email=email or None,
+            month=month or None,
+        )
+        if not rows:
+            typer.echo("No goals to compare.")
+            return
+
+        for r in rows:
+            cat = r.get("category")
+            goal = r.get("goal")
+            spent = r.get("spent")
+            diff = r.get("diff")
+            line = (
+                f"{cat:15}  goal={goal:.2f}  "
+                f"spent={spent:.2f}  diff={diff:.2f}"
+            )
+            typer.echo(line)
+    except Exception as exc:
+        typer.secho(
+            f"Status failed: {exc}",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=1)
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
