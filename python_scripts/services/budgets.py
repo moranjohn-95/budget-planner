@@ -10,14 +10,22 @@ Columns:
 
 from __future__ import annotations
 
+import uuid
 from typing import List, Dict
 
 from ..utilities.constants import ALLOWED_CATEGORIES
 from ..budget_planner.sheets_gateway import get_client, get_sheet
+from ..budget_planner import auth
 from . import transactions as tx
 
 BUDGET_SHEET = "budget"
-BUDGET_HEADERS: List[str] = ["category", "monthly_goal"]
+BUDGET_HEADERS: List[str] = [
+    "budget_id",
+    "user_id",
+    "month",
+    "category_norm",
+    "monthly_goal",
+]
 
 
 def _ensure_budget_sheet(ws) -> None:
@@ -32,19 +40,29 @@ def _ensure_budget_sheet(ws) -> None:
         )
 
 
-def set_goal(*, category: str, monthly_goal: float) -> None:
+def set_goal(
+    *, email: str, month: str, category: str, amount: float
+) -> str:
     """
-    Create/ update a monthly goal for a given category.
+    update a goal for (user_id, month and category_norm).
+    Returns the budget_id.
     """
-    cat = (category or "").strip().lower()
-    if cat not in ALLOWED_CATEGORIES:
+    cat_norm = (category or "").strip().lower()
+    if cat_norm not in ALLOWED_CATEGORIES:
         allowed = ", ".join(ALLOWED_CATEGORIES)
         raise ValueError(f"Invalid category '{category}'. Allowed: {allowed}")
 
     try:
-        goal = float(monthly_goal)
+        goal = float(amount)
     except Exception as exc:
-        raise ValueError("monthly_goal must be numeric.") from exc
+        raise ValueError("Amount must be numeric.") from exc
+    if goal <= 0.0:
+        raise ValueError("Amount must be greater than zero.")
+
+    user = auth.get_user_by_email(email)
+    if not user:
+        raise RuntimeError("No account found for that email.")
+    user_id = str(user.get("user_id"))
 
     client = get_client()
     sheet = get_sheet(client)
@@ -52,39 +70,68 @@ def set_goal(*, category: str, monthly_goal: float) -> None:
     _ensure_budget_sheet(ws)
 
     rows = ws.get_all_records()
+
     for idx, row in enumerate(rows, start=2):
-        if str(row.get("category", "")).strip().lower() == cat:
-            ws.update_cell(idx, 2, goal)
-            return
+        if (
+            str(row.get("user_id")) == user_id
+            and str(row.get("month")) == month
+            and str(row.get("category_norm")) == cat_norm
+        ):
 
-    ws.append_row([cat, goal], value_input_option="USER_ENTERED")
+            ws.update_cell(idx, 5, goal)
+            return str(row.get("budget_id")) or "updated"
+
+    budget_id = str(uuid.uuid4())
+    ws.append_row(
+        [budget_id, user_id, month, cat_norm, goal],
+        value_input_option="USER_ENTERED",
+    )
+    return budget_id
 
 
-def list_goals() -> List[Dict]:
-    """Return all budget goals as a list of dicts."""
+def list_goals(
+    *, email: str | None = None, month: str | None = None
+) -> List[Dict]:
+    """
+    Return goals. Optional filters:
+    - email
+    - month
+    """
     client = get_client()
     sheet = get_sheet(client)
     ws = sheet.worksheet(BUDGET_SHEET)
     _ensure_budget_sheet(ws)
-    return ws.get_all_records()
+    rows = ws.get_all_records()
+
+    if email:
+        user = auth.get_user_by_email(email)
+        if not user:
+            return []
+        user_id = str(user.get("user_id"))
+        rows = [r for r in rows if str(r.get("user_id")) == user_id]
+
+    if month:
+        rows = [r for r in rows if str(r.get("month")) == month]
+
+    return rows
 
 
 def goals_vs_spend(
-    *, email: str | None = None, month: str | None = None
+    *, email: str, month: str
 ) -> List[Dict]:
     """
-    Compare goals with actual category spend.
-    month: 'YYYY-MM'. If provided - filter by that month.
+    Compare goals with actual spend for a user and month.
     """
-    goals = list_goals()
+    goals = list_goals(email=email, month=month)
+
     spend = tx.summarize_by_category(email=email, month=month)
     spent_by_cat = {r["category"]: float(r["total"]) for r in spend}
 
     rows: List[Dict] = []
     for g in goals:
-        cat = str(g.get("category", "")).strip().lower()
+        cat = str(g.get("category_norm", "")).strip().lower()
         goal = float(g.get("monthly_goal", 0))
-        spent = float(spent_by_cat.get(cat, 0))
+        spent = float(spent_by_cat.get(cat, 0.0))
         diff = goal - spent
         rows.append(
             {"category": cat, "goal": goal, "spent": spent, "diff": diff}
