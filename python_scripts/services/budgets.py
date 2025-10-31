@@ -18,6 +18,7 @@ from collections import defaultdict
 from ..budget_planner.sheets_gateway import get_client, get_sheet
 from ..budget_planner import auth
 from . import transactions as tx
+from ..utilities.validation import require_month
 
 BUDGET_SHEET = "budget"
 BUDGET_HEADERS: List[str] = [
@@ -52,6 +53,8 @@ def set_goal(
     if cat_norm not in ALLOWED_CATEGORIES:
         allowed = ", ".join(ALLOWED_CATEGORIES)
         raise ValueError(f"Invalid category '{category}'. Allowed: {allowed}")
+
+    month = require_month(month)
 
     try:
         goal = float(amount)
@@ -123,16 +126,21 @@ def goals_vs_spend(
     """
     Compare goals with actual spend for a user and month.
     """
+    month = require_month(month)
+
     goals = list_goals(email=email, month=month)
 
-    # Compute spend totals by category for the given month
     rows = tx.list_transactions(email=email)
     spent_by_cat = defaultdict(float)
     for r in rows:
         date_s = str(r.get("date", "")).strip()
         if month and not date_s.startswith(month):
             continue
-        cat = str(r.get("category") or r.get("category_norm") or "").strip().lower()
+        cat = str(
+            r.get("category")
+            or r.get("category_norm")
+            or ""
+        ).strip().lower()
         try:
             amt = float(r.get("amount", 0) or 0)
         except Exception:
