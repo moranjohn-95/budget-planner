@@ -329,23 +329,46 @@ def cli_summary(
 
 @app.command("set-goal")
 def cli_set_goal(
-    category: str = typer.Option(
-        ...,
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        prompt="Email",
+        help="Account email this goal belongs to.",
+    ),
+    month: Optional[str] = typer.Option(
+        None,
+        "--month",
+        prompt="Month (YYYY-MM)",
+        help="Month the goal applies to (e.g., 2025-10).",
+    ),
+    category: Optional[str] = typer.Option(
+        None,
         "--category",
-        prompt=f"Category ({', '.join(ALLOWED_CATEGORIES)})",
+        prompt=(
+            "Category (groceries, house-bills, transport, social, "
+            "health, work-related, subscriptions, entertainment, "
+            "savings, misc)"
+        ),
         help="Budget category.",
     ),
-    monthly_goal: float = typer.Option(
-        ...,
+    amount: Optional[float] = typer.Option(
+        None,
         "--amount",
         prompt="Monthly goal amount",
-        help="Numeric goal for the category.",
+        help="Goal amount for the month (numeric).",
     ),
 ) -> None:
-    """Create or update a category goal."""
+    """
+    Create or update a monthly goal for a user+month+category.
+    """
     try:
-        bud.set_goal(category=category, monthly_goal=monthly_goal)
-        typer.secho("Goal saved.", fg=typer.colors.GREEN)
+        bid = bud.set_goal(
+            email=email,
+            month=month,
+            category=category,
+            amount=amount,
+        )
+        typer.secho(f"Goal saved (id: {bid})", fg=typer.colors.GREEN)
     except Exception as exc:
         typer.secho(f"Save failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
