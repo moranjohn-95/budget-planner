@@ -147,3 +147,38 @@ def list_transactions(
         )
 
     return rows[: max(0, int(limit))]
+
+
+def summarize_by_category(
+    *,
+    email: str | None = None,
+    date: str | None = None,
+) -> dict[str, float]:
+    """
+    Total transactions categororized.
+
+    Optional filters:
+      - email: only this user's transactions
+      - date : YYYY-MM-DD
+
+    Returns:
+        category: total_amount:
+    """
+    rows = list_transactions(email=email, date=date, limit=9999)
+    summary: dict[str, float] = {}
+
+    for row in rows:
+        cat = (
+            row.get("category")
+            or row.get("category_norm")
+            or "uncategorized"
+        ).strip().lower()
+
+        try:
+            amt = float(row.get("amount", 0) or 0)
+        except ValueError:
+            amt = 0.0
+
+        summary[cat] = summary.get(cat, 0.0) + amt
+
+    return summary
