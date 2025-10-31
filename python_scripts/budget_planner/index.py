@@ -383,7 +383,7 @@ def cli_list_goals() -> None:
             typer.echo("No goals set.")
             return
         for r in rows:
-            typer.echo(f"{r.get('category')}: {r.get('monthly_goal')}")
+            typer.echo(f"{r.get('category_norm')}: {r.get('monthly_goal')}")
     except Exception as exc:
         typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)

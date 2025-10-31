@@ -14,6 +14,7 @@ import uuid
 from typing import List, Dict
 
 from ..utilities.constants import ALLOWED_CATEGORIES
+from collections import defaultdict
 from ..budget_planner.sheets_gateway import get_client, get_sheet
 from ..budget_planner import auth
 from . import transactions as tx
@@ -124,8 +125,19 @@ def goals_vs_spend(
     """
     goals = list_goals(email=email, month=month)
 
-    spend = tx.summarize_by_category(email=email, month=month)
-    spent_by_cat = {r["category"]: float(r["total"]) for r in spend}
+    # Compute spend totals by category for the given month
+    rows = tx.list_transactions(email=email)
+    spent_by_cat = defaultdict(float)
+    for r in rows:
+        date_s = str(r.get("date", "")).strip()
+        if month and not date_s.startswith(month):
+            continue
+        cat = str(r.get("category") or r.get("category_norm") or "").strip().lower()
+        try:
+            amt = float(r.get("amount", 0) or 0)
+        except Exception:
+            continue
+        spent_by_cat[cat] += amt
 
     rows: List[Dict] = []
     for g in goals:
