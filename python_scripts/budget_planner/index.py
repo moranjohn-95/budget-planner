@@ -380,15 +380,41 @@ def cli_set_goal(
 
 
 @app.command("list-goals")
-def cli_list_goals() -> None:
-    """Show all budget goals."""
+def cli_list_goals(
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        help="Filter to this account's goals.",
+    ),
+    month: Optional[str] = typer.Option(
+        None,
+        "--month",
+        help="Filter by month (YYYY-MM).",
+    ),
+) -> None:
+    """
+    Show budget goals. Optional filters: --email, --month (YYYY-MM).
+    """
     try:
-        rows = bud.list_goals()
+        if month:
+            month = require_month(month)
+
+        rows = bud.list_goals(email=email, month=month)
         if not rows:
-            typer.echo("No goals set.")
+            typer.echo("No goals found.")
             return
+
         for r in rows:
-            typer.echo(f"{r.get('category_norm')}: {r.get('monthly_goal')}")
+            cat = r.get("category_norm") or r.get("category")
+            goal = r.get("monthly_goal")
+            user_id = r.get("user_id")
+            mon = r.get("month")
+
+            if user_id or mon:
+                typer.echo(f"{cat}: {goal}  (user={user_id}, month={mon})")
+            else:
+                typer.echo(f"{cat}: {goal}")
+
     except Exception as exc:
         typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
