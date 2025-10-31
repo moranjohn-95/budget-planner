@@ -1,9 +1,11 @@
 """
 budgets.py
 ----------
-Set/list budget goals and compare them to actual spend.
+Per-user, per-month budget goals and comparisons.
+
 Sheet: 'budget'
-Columns: category - monthly_goal
+Columns:
+  budget_id | user_id | month | category_norm | monthly_goal
 """
 
 from __future__ import annotations
