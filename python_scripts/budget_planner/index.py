@@ -6,6 +6,7 @@ from python_scripts.services import transactions as tx
 from ..services import reports
 from ..utilities.constants import ALLOWED_CATEGORIES
 from ..services import budgets as bud
+from ..utilities.validation import require_date, require_month
 
 app = typer.Typer(no_args_is_help=True, help="Budget Planner CLI")
 
@@ -205,6 +206,8 @@ def cli_add_txn(
             typer.secho("Amount is required.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
 
+        date = require_date(date, "Date")
+
         txn_id = tx.add_transaction(
             email=email,
             date=date,
@@ -361,6 +364,8 @@ def cli_set_goal(
     """
     Create or update a monthly goal for a user+month+category.
     """
+    month = require_month(month)
+
     try:
         bid = bud.set_goal(
             email=email,
