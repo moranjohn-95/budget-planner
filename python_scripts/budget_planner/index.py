@@ -411,6 +411,9 @@ def cli_budget_status(
     Compare goals to spend. Shows category, goal, spent, and difference.
     """
     try:
+        if month:
+            month = require_month(month)
+
         rows = bud.goals_vs_spend(
             email=email or None,
             month=month or None,
