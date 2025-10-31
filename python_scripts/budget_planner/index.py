@@ -293,6 +293,39 @@ def cli_sum_month(
         raise typer.Exit(code=1)
 
 
+@app.command("summary")
+def cli_summary(
+    email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        prompt="Email",
+        help="Filter by account email.",
+    ),
+    date: Optional[str] = typer.Option(
+        None,
+        "--date",
+        help="Filter by date (YYYY-MM-DD).",
+    ),
+) -> None:
+    """
+    Show total spending grouped by category.
+    """
+    try:
+        summary = tx.summarize_by_category(email=email, date=date)
+        if not summary:
+            typer.echo("No transactions found.")
+            raise typer.Exit(code=0)
+
+        typer.echo("Category Summary:")
+        typer.echo("-------------------")
+        for cat, total in summary.items():
+            typer.echo(f"{cat:15} £{total:.2f}")
+
+    except Exception as exc:
+        typer.secho(f"Summary failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
