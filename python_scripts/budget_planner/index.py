@@ -5,6 +5,7 @@ from . import auth
 from python_scripts.services import transactions as tx
 from ..services import reports
 from ..utilities.constants import ALLOWED_CATEGORIES
+from ..services import budgets as bud
 
 app = typer.Typer(no_args_is_help=True, help="Budget Planner CLI")
 
@@ -323,6 +324,45 @@ def cli_summary(
 
     except Exception as exc:
         typer.secho(f"Summary failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
+@app.command("set-goal")
+def cli_set_goal(
+    category: str = typer.Option(
+        ...,
+        "--category",
+        prompt=f"Category ({', '.join(ALLOWED_CATEGORIES)})",
+        help="Budget category.",
+    ),
+    monthly_goal: float = typer.Option(
+        ...,
+        "--amount",
+        prompt="Monthly goal amount",
+        help="Numeric goal for the category.",
+    ),
+) -> None:
+    """Create or update a category goal."""
+    try:
+        bud.set_goal(category=category, monthly_goal=monthly_goal)
+        typer.secho("Goal saved.", fg=typer.colors.GREEN)
+    except Exception as exc:
+        typer.secho(f"Save failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+
+@app.command("list-goals")
+def cli_list_goals() -> None:
+    """Show all budget goals."""
+    try:
+        rows = bud.list_goals()
+        if not rows:
+            typer.echo("No goals set.")
+            return
+        for r in rows:
+            typer.echo(f"{r.get('category')}: {r.get('monthly_goal')}")
+    except Exception as exc:
+        typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
 
