@@ -138,6 +138,12 @@ def list_transactions(
         rows = [r for r in rows if str(r.get("date")) == date]
 
     if rows and "created_at" in rows[0]:
-        rows.sort(key=lambda r: r.get("created_at", ""), reverse=True)
+        rows.sort(
+            key=lambda r: (
+               r.get("created_at", ""),
+               r.get("date", ""),
+            ),
+            reverse=True,
+        )
 
     return rows[: max(0, int(limit))]
