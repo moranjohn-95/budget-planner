@@ -437,6 +437,7 @@ def cli_budget_status(
 ) -> None:
     """
     Compare goals to spend. Shows category, goal, spent and difference.
+    Green = within budget, Red = overspent.
     """
     try:
         if month:
@@ -465,14 +466,19 @@ def cli_budget_status(
             total_goal += goal
             total_spent += spent
 
+            color = typer.colors.GREEN if diff >= 0 else typer.colors.RED
             line = f"{cat:14}  {goal:8.2f}  {spent:8.2f}  {diff:8.2f}"
-            typer.echo(line)
+            typer.secho(line, fg=color)
 
         typer.echo("----------------------------------------")
         total_diff = total_goal - total_spent
-        typer.echo(
+        total_color = (
+            typer.colors.GREEN if total_diff >= 0 else typer.colors.RED
+        )
+        typer.secho(
             f"{'TOTAL':14}  {total_goal:8.2f}  "
-            f"{total_spent:8.2f}  {total_diff:8.2f}"
+            f"{total_spent:8.2f}  {total_diff:8.2f}",
+            fg=total_color,
         )
 
     except Exception as exc:
