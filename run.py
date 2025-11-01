@@ -1,6 +1,6 @@
 """
 Heroku entrypoint for CI terminal (80x24).
-Tiny REPL that forwards commands to the Typer app.
+REPL that forwards commands to the Typer app.
 """
 
 from __future__ import annotations
