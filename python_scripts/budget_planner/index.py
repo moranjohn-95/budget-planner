@@ -323,6 +323,8 @@ def cli_summary(
         typer.echo("Category Summary:")
         typer.echo("-------------------")
         for cat, total in summary.items():
+            typer.echo(f"{cat:15} {total:.2f}")
+            continue
             typer.echo(f"{cat:15} £{total:.2f}")
 
     except Exception as exc:
@@ -430,11 +432,11 @@ def cli_budget_status(
     month: str = typer.Option(
         "",
         "--month",
-        help="Filter by month (YYYY-MM)- optional.",
+        help="Filter by month (YYYY-MM) - optional.",
     ),
 ) -> None:
     """
-    Compare goals to spend. Shows category, goal, spent, and difference.
+    Compare goals to spend. Shows category, goal, spent and difference.
     """
     try:
         if month:
@@ -448,21 +450,33 @@ def cli_budget_status(
             typer.echo("No goals to compare.")
             return
 
+        typer.echo("category        goal      spent     diff")
+        typer.echo("----------------------------------------")
+
+        total_goal = 0.0
+        total_spent = 0.0
+
         for r in rows:
-            cat = r.get("category")
-            goal = r.get("goal")
-            spent = r.get("spent")
-            diff = r.get("diff")
-            line = (
-                f"{cat:15}  goal={goal:.2f}  "
-                f"spent={spent:.2f}  diff={diff:.2f}"
-            )
+            cat = str(r.get("category"))
+            goal = float(r.get("goal", 0))
+            spent = float(r.get("spent", 0))
+            diff = float(r.get("diff", 0))
+
+            total_goal += goal
+            total_spent += spent
+
+            line = f"{cat:14}  {goal:8.2f}  {spent:8.2f}  {diff:8.2f}"
             typer.echo(line)
-    except Exception as exc:
-        typer.secho(
-            f"Status failed: {exc}",
-            fg=typer.colors.RED,
+
+        typer.echo("----------------------------------------")
+        total_diff = total_goal - total_spent
+        typer.echo(
+            f"{'TOTAL':14}  {total_goal:8.2f}  "
+            f"{total_spent:8.2f}  {total_diff:8.2f}"
         )
+
+    except Exception as exc:
+        typer.secho(f"Status failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
 

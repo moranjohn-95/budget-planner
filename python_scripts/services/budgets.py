@@ -121,12 +121,13 @@ def list_goals(
 
 
 def goals_vs_spend(
-    *, email: str, month: str
+    *, email: str, month: str | None
 ) -> List[Dict]:
     """
     Compare goals with actual spend for a user and month.
     """
-    month = require_month(month)
+    if month:
+        month = require_month(month)
 
     goals = list_goals(email=email, month=month)
 
