@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Web Terminal</title>
+    <link rel="stylesheet" href="https://unpkg.com/xterm/css/xterm.css" />
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 1rem; }
+      #toolbar { margin-bottom: 0.75rem; }
+      #term { width: 100%; height: 480px; border: 1px solid #ddd; }
+      button { background: #e95420; color: #fff; border: 0; padding: 8px 14px; border-radius: 4px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <h1>Web Terminal</h1>
+    <div id="toolbar">
+      <button id="run">RUN PROGRAM</button>
+    </div>
+    <div id="term"></div>
+
+    <script src="https://unpkg.com/xterm/lib/xterm.js"></script>
+    <script>
+      const term = new window.Terminal({ convertEol: true, fontFamily: 'monospace', fontSize: 14 });
+      term.open(document.getElementById('term'));
+
+      const wsProto = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+      const ws = new WebSocket(wsProto + location.host + '/term');
+
+      ws.addEventListener('open', () => {
+        term.writeln('Connected. Running your file: run.py');
+      });
+
+      ws.addEventListener('message', (e) => {
+        term.write(e.data);
+      });
+
+      ws.addEventListener('close', () => {
+        term.writeln('\r\n[disconnected]');
+      });
+
+      term.onData(data => {
+        if (ws.readyState === WebSocket.OPEN) ws.send(data);
+      });
+
+      document.getElementById('run').addEventListener('click', () => {
+        if (ws.readyState === WebSocket.OPEN) ws.send('\n');
+      });
+    </script>
+  </body>
+</html>
+
