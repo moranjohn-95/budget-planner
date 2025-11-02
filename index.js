@@ -6,11 +6,16 @@ const pty = require("node-pty");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Serve static files (our terminal page lives in /public)
-app.use(express.static(path.join(__dirname, "public")));
+// First, handle root by redirecting to the terminal page.
+// This must come BEFORE express.static, otherwise the static middleware
+// will serve public/index.html for '/'.
 app.get("/", (req, res) => {
   res.redirect("/terminal.html");
 });
+
+// Serve static files (our terminal page lives in /public). Disable default
+// index serving so it can't shadow the redirect above if order changes.
+app.use(express.static(path.join(__dirname, "public"), { index: false }));
 
 const server = app.listen(PORT, () => {
   console.log(`Web terminal on http://localhost:${PORT}`);
