@@ -1,31 +1,44 @@
-// ===================================================
-// Total.js start script
-// https://www.totaljs.com
-// taken from Love Sandwiches -Code Institute
-// ===================================================
+const express = require("express");
+const path = require("path");
+const { WebSocketServer } = require("ws");
+const pty = require("node-pty");
 
-const options = {};
+const app = express();
+const PORT = process.env.PORT || 8000;
 
-// options.ip = '127.0.0.1';
-options.port = parseInt(process.env.PORT);
-// options.unixsocket = require('path').join(require('os').tmpdir(), 'app_name');
-// options.config = { name: 'Total.js' };
-// options.sleep = 3000;
-// options.inspector = 9229;
-// options.watch = ['private'];
-// options.livereload = 'https://yourhostname';
+// Serve static files (our terminal page lives in /public)
+app.use(express.static("public"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
-// Enables cluster:
-// options.cluster = 'auto';
-// options.cluster_limit = 10; // max 10. threads (works only with "auto" scaling)
+const server = app.listen(PORT, () => {
+  console.log(`Web terminal on http://localhost:${PORT}`);
+});
 
-// Enables threads:
-// options.cluster = 'auto';
-// options.cluster_limit = 10; // max 10. threads (works only with "auto" scaling)
-// options.timeout = 5000;
-// options.threads = '/api/';
-// options.logs = 'isolated';
+// WebSocket endpoint for the terminal stream
+const wss = new WebSocketServer({ server, path: "/term" });
 
-var type = process.argv.indexOf('--release', 1) !== -1 || process.argv.indexOf('release', 1) !== -1 ? 'release' : 'debug';
-// require('total4/' + type)(options);
-require('total4').http('release', options);
+wss.on("connection", (ws) => {
+  // On Heroku (Linux), 'python' resolves to the correct interpreter.
+  const shell = "python";
+  const p = pty.spawn(shell, ["run.py"], {
+    name: "xterm-color",
+    cols: 80,
+    rows: 24,
+    cwd: process.cwd(),
+    env: process.env
+  });
+
+  p.onData((data) => {
+    try { ws.send(data); } catch (_) {}
+  });
+
+  ws.on("message", (msg) => {
+    p.write(msg.toString());
+  });
+
+  ws.on("close", () => {
+    try { p.kill(); } catch (_) {}
+  });
+});
