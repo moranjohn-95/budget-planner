@@ -25,6 +25,11 @@ const server = app.listen(PORT, () => {
 const wss = new WebSocketServer({ server, path: "/term" });
 
 wss.on("connection", (ws) => {
+  // Keep the websocket alive on Heroku by sending ping frames regularly.
+  // Heroku routers can drop idle connections (~55s) without traffic.
+  ws.isAlive = true;
+  ws.on("pong", () => { ws.isAlive = true; });
+
   // On Heroku (Linux), 'python' resolves to the correct interpreter.
   const shell = "python";
   const p = pty.spawn(shell, ["-u", "run_interactive.py"], {
@@ -45,5 +50,12 @@ wss.on("connection", (ws) => {
 
   ws.on("close", () => {
     try { p.kill(); } catch (_) {}
+    clearInterval(keepalive);
   });
+
+  const keepalive = setInterval(() => {
+    if (ws.readyState === ws.OPEN) {
+      try { ws.ping(); } catch (_) {}
+    }
+  }, 30000); // 30s ping
 });
