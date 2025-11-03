@@ -19,6 +19,26 @@ def sep(width: int = 40) -> None:
     typer.secho("-" * width, fg=typer.colors.BRIGHT_BLACK)
 
 
+def session_role() -> str:
+    """Return the current session role (editor/user), defaulting to user."""
+    return (os.environ.get("BP_ROLE") or "user").strip().lower() or "user"
+
+
+def resolve_email_for_action(arg_email: Optional[str], *, require_login: bool = True) -> str:
+    """Resolve which email a command should act on.
+
+    - For editors: if --email is provided, use it; otherwise use the session email.
+    - For users: require the session email and block cross-user actions.
+    """
+    role = session_role()
+    if role == "editor":
+        if arg_email:
+            return _norm_email(arg_email) or ""
+        return _session_email(None, require=require_login) or ""
+    # Regular user path
+    return _session_email(arg_email, require=require_login) or ""
+
+
 def _norm_email(value: str | None) -> str | None:
     """Lower/trim an email for consistent comparison."""
     if value is None:
@@ -176,8 +196,8 @@ def cli_whoami(
 ) -> None:
     """Show basic details for the current session (or given email)."""
     try:
-        # Enforce session; do not prompt when not logged in
-        resolved = _session_email(email, require=True)
+        # Allow editor to inspect another account via --email
+        resolved = resolve_email_for_action(email, require_login=True)
         user = auth.get_user_by_email(resolved or "")
         if not user:
             typer.secho(
@@ -311,8 +331,8 @@ def cli_list_txns(
 ) -> None:
     """Show recent transactions with optional filters."""
     try:
-        # Enforce current session; do not allow cross-user listing
-        resolved = _session_email(email, require=True)
+        # Editor can pass --email to inspect another account
+        resolved = resolve_email_for_action(email, require_login=True)
 
         header("Transactions")
         typer.secho("txn_id | date | category | amount | note", fg=typer.colors.CYAN, bold=True)
@@ -457,8 +477,8 @@ def cli_set_goal(
         if month:
             month = require_month(month)
 
-        # Enforce session email; do not allow cross-user goal edits
-        resolved = _session_email(email, require=True)
+        # Editor can pass --email to set goals for another account
+        resolved = resolve_email_for_action(email, require_login=True)
 
         bid = bud.set_goal(
             email=resolved or "",
