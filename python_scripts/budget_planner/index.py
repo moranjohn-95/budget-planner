@@ -285,12 +285,17 @@ def cli_list_txns(
         help="Max rows to show (default 20).",
     ),
 ) -> None:
-    """
-    Show recent transactions with optional filters.
-    """
+    """Show recent transactions with optional filters."""
     try:
+        # Enforce current session; do not allow cross-user listing
+        resolved = _session_email(email, require=True)
+
+        # Validate date if provided
+        if date:
+            date = require_date(date)
+
         rows = tx.list_transactions(
-            email=email,
+            email=resolved,
             date=date,
             limit=limit,
         )
@@ -298,7 +303,6 @@ def cli_list_txns(
             typer.echo("No transactions found.")
             return
 
-        # Simple table-like output, one row per line
         for r in rows:
             line = (
                 f"{r.get('txn_id')} | {r.get('date')} | "
@@ -306,6 +310,13 @@ def cli_list_txns(
                 f"{r.get('note')}"
             )
             typer.echo(line)
+    except SystemExit:
+        sess = _norm_email(os.environ.get("BP_EMAIL"))
+        typer.secho(
+            f"You are logged in as '{sess}'. Cannot use a different --email.",
+            fg=typer.colors.RED,
+        )
+        raise
     except Exception as exc:
         typer.secho(f"List failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
