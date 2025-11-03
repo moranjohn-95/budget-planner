@@ -285,7 +285,7 @@ def cli_add_txn(
             typer.secho("Amount is required.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
 
-        resolved = _session_email(email, require=True)
+        resolved = resolve_email_for_action(email, require_login=True)
 
         date = require_date(date)
 
@@ -391,7 +391,7 @@ def cli_sum_month(
     try:
         # Validate month and enforce session email
         month = require_month(month)
-        resolved = _session_email(email, require=True)
+        resolved = resolve_email_for_action(email, require_login=True)
 
         total = reports.monthly_total(month=month, email=resolved)
         if resolved:
@@ -420,7 +420,7 @@ def cli_summary(
     Show total spending grouped by category.
     """
     try:
-        resolved = _session_email(email, require=True)
+        resolved = resolve_email_for_action(email, require_login=True)
         if date:
             date = require_date(date)
         summary = tx.summarize_by_category(email=resolved, date=date)
@@ -519,7 +519,7 @@ def cli_list_goals(
         if month:
             month = require_month(month)
 
-        resolved = _session_email(email, require=True)
+        resolved = resolve_email_for_action(email, require_login=True)
 
         rows = bud.list_goals(email=resolved, month=month)
         if not rows:
@@ -568,7 +568,7 @@ def cli_budget_status(
             month = require_month(month)
 
         # Enforce session email; block cross-user status checks
-        resolved = _session_email(email or None, require=True)
+        resolved = resolve_email_for_action(email or None, require_login=True)
 
         rows = bud.goals_vs_spend(
             email=resolved or None,
@@ -643,3 +643,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
