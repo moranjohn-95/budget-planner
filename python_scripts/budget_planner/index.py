@@ -17,7 +17,12 @@ def _norm_email(value: str | None) -> str | None:
     return value.strip().lower()
 
 
-def _session_email(arg_email: str | None, *, require: bool) -> str | None:
+def _session_email(
+    arg_email: str | None,
+    *,
+    require: bool,
+    prompt_if_missing: bool = False,
+) -> str | None:
     """
     Fix the effective email for this process.
 
@@ -42,7 +47,11 @@ def _session_email(arg_email: str | None, *, require: bool) -> str | None:
         return arg
 
     if require:
-        return _norm_email(typer.prompt("Email"))
+        if prompt_if_missing:
+            return _norm_email(typer.prompt("Email"))
+        # Require an authenticated session; do not prompt here
+        typer.secho("Please login first (bp> login).", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
 
     return None
 
@@ -152,7 +161,8 @@ def cli_whoami(
 ) -> None:
     """Show basic details for the current session (or given email)."""
     try:
-        resolved = _session_email(email, require=True)
+        # Allow a one-time prompt if not logged in
+        resolved = _session_email(email, require=True, prompt_if_missing=True)
         user = auth.get_user_by_email(resolved or "")
         if not user:
             typer.secho(
@@ -207,7 +217,6 @@ def cli_add_txn(
     email: Optional[str] = typer.Option(
         None,
         "--email",
-        prompt="Email",
         help="Account email to attach the transaction to.",
     ),
     date: Optional[str] = typer.Option(
