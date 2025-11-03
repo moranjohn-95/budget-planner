@@ -566,6 +566,15 @@ def cli_budget_status(
         raise typer.Exit(code=1)
 
 
+@app.command("logout")
+def cli_logout() -> None:
+    """Clear the current session email."""
+    if os.environ.pop("BP_EMAIL", None):
+        typer.secho("Logged out.", fg=typer.colors.GREEN)
+    else:
+        typer.echo("No active session.")
+
+
 def main() -> None:
     """Entrypoint for the Typer app."""
     app()
