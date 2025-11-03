@@ -501,14 +501,17 @@ def cli_budget_status(
 ) -> None:
     """
     Compare goals to spend. Shows category, goal, spent and difference.
-    'diff' is color-coded: green = under/on budget, red = overspent.
+    Enforces the logged-in session email; month is optional.
     """
     try:
         if month:
             month = require_month(month)
 
+        # Enforce session email; block cross-user status checks
+        resolved = _session_email(email or None, require=True)
+
         rows = bud.goals_vs_spend(
-            email=email or None,
+            email=resolved or None,
             month=month or None,
         )
         if not rows:
@@ -530,30 +533,34 @@ def cli_budget_status(
             total_goal += goal
             total_spent += spent
 
-            diff_color = typer.colors.GREEN if diff >= 0 else typer.colors.RED
-            diff_str = f"{diff:8.2f}"
-            colored_diff = typer.style(diff_str, fg=diff_color)
-
-            line = (
-                f"{cat:14}  {goal:8.2f}  {spent:8.2f}  "
-                f"{colored_diff}"
+            diff_text = f"{diff:8.2f}"
+            diff_colored = (
+                typer.style(diff_text, fg=typer.colors.GREEN)
+                if diff >= 0
+                else typer.style(diff_text, fg=typer.colors.RED)
             )
-            typer.echo(line)
+
+            typer.echo(f"{cat:14}  {goal:8.2f}  {spent:8.2f}  {diff_colored}")
 
         typer.echo("----------------------------------------")
-
         total_diff = total_goal - total_spent
-        total_color = (
-            typer.colors.GREEN if total_diff >= 0 else typer.colors.RED
+        total_diff_text = f"{total_diff:8.2f}"
+        total_diff_colored = (
+            typer.style(total_diff_text, fg=typer.colors.GREEN)
+            if total_diff >= 0
+            else typer.style(total_diff_text, fg=typer.colors.RED)
         )
-        total_diff_str = typer.style(f"{total_diff:8.2f}", fg=total_color)
-
-        summary_line = (
-            f"{'TOTAL':14}  {total_goal:8.2f}  "
-            f"{total_spent:8.2f}  {total_diff_str}"
+        typer.echo(
+            f"{'TOTAL':14}  {total_goal:8.2f}  {total_spent:8.2f}  {total_diff_colored}"
         )
-        typer.echo(summary_line)
 
+    except SystemExit:
+        sess = _norm_email(os.environ.get("BP_EMAIL"))
+        typer.secho(
+            f"You are logged in as '{sess}'. Cannot use a different --email.",
+            fg=typer.colors.RED,
+        )
+        raise
     except Exception as exc:
         typer.secho(f"Status failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
