@@ -20,15 +20,21 @@
     <div id="term"></div>
 
     <script src="https://unpkg.com/xterm/lib/xterm.js"></script>
+    <script src="https://unpkg.com/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
     <script>
       const term = new window.Terminal({ convertEol: true, fontFamily: 'monospace', fontSize: 14 });
+      const fitAddon = new window.FitAddon.FitAddon();
+      term.loadAddon(fitAddon);
       term.open(document.getElementById('term'));
+      fitAddon.fit();
 
       const wsProto = (location.protocol === 'https:') ? 'wss://' : 'ws://';
       const ws = new WebSocket(wsProto + location.host + '/term');
 
       ws.addEventListener('open', () => {
         term.writeln('Connected. Running your file: run.py');
+        // Send initial size so the PTY matches the visible terminal
+        sendSize();
       });
 
       ws.addEventListener('message', (e) => {
@@ -43,10 +49,24 @@
         if (ws.readyState === WebSocket.OPEN) ws.send(data);
       });
 
+      function sendSize() {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows }));
+        }
+      }
+
+      // Refitting on window resize helps prevent awkward word wrapping
+      window.addEventListener('resize', () => {
+        fitAddon.fit();
+        sendSize();
+      });
+
+      // If the terminal itself reports size changes, propagate them too
+      term.onResize(() => sendSize());
+
       document.getElementById('run').addEventListener('click', () => {
         if (ws.readyState === WebSocket.OPEN) ws.send('\n');
       });
     </script>
   </body>
 </html>
-

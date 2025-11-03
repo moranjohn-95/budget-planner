@@ -34,6 +34,7 @@ wss.on("connection", (ws) => {
   const shell = "python";
   const p = pty.spawn(shell, ["-u", "run_interactive.py"], {
     name: "xterm-color",
+    // Start with a reasonable default, then the client will resize us.
     cols: 80,
     rows: 24,
     cwd: process.cwd(),
@@ -45,7 +46,24 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("message", (msg) => {
-    p.write(msg.toString());
+    // Support structured control messages from the browser
+    // (e.g., terminal resize) as well as raw input.
+    const text = msg.toString();
+    try {
+      const data = JSON.parse(text);
+      if (data && data.type === "resize") {
+        const c = parseInt(data.cols, 10);
+        const r = parseInt(data.rows, 10);
+        if (Number.isInteger(c) && Number.isInteger(r) && c > 0 && r > 0) {
+          try { p.resize(c, r); } catch (_) {}
+        }
+        return;
+      }
+      // Fallthrough: not a control message
+    } catch (_) {
+      // Not JSON; treat as raw input
+    }
+    p.write(text);
   });
 
   ws.on("close", () => {
