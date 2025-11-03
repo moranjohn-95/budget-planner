@@ -1,12 +1,51 @@
 from typing import Optional
 
 import typer
+import os
 from . import auth
 from python_scripts.services import transactions as tx
 from ..services import reports
 from ..utilities.constants import ALLOWED_CATEGORIES
 from ..services import budgets as bud
 from ..utilities.validation import require_date, require_month
+
+
+def _norm_email(value: str | None) -> str | None:
+    """Lower/trim an email for consistent comparison."""
+    if value is None:
+        return None
+    return value.strip().lower()
+
+
+def _session_email(arg_email: str | None, *, require: bool) -> str | None:
+    """
+    Fix the effective email for this process.
+
+    - If BP_EMAIL is set:
+        * If arg_email is given and different -> exit with error.
+        * Otherwise return BP_EMAIL.
+    - If BP_EMAIL is not set:
+        * If arg_email is given -> return it.
+        * If require=True and arg_email missing -> prompt once.
+        * If require=False and arg_email missing -> return None.
+    """
+    sess = _norm_email(os.environ.get("BP_EMAIL"))
+    arg = _norm_email(arg_email)
+
+    if sess:
+        if arg and arg != sess:
+            # Let callers catch SystemExit to print a friendly message.
+            raise typer.Exit(code=1)
+        return sess
+
+    if arg:
+        return arg
+
+    if require:
+        return _norm_email(typer.prompt("Email"))
+
+    return None
+
 
 app = typer.Typer(no_args_is_help=True, help="Budget Planner CLI")
 
