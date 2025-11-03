@@ -235,28 +235,34 @@ def cli_add_txn(
         help="Optional note for this transaction.",
     ),
 ) -> None:
-    """
-    Add a new transaction row to the 'transactions' sheet.
-    """
+    """Add a new transaction row to the 'transactions' sheet."""
     try:
         if amount is None:
             typer.secho("Amount is required.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
 
-        date = require_date(date, "Date")
+        resolved = _session_email(email, require=True)
+
+        date = require_date(date)
 
         txn_id = tx.add_transaction(
-            email=email,
+            email=resolved or "",
             date=date,
             category=category,
             amount=amount,
             note=note or "",
         )
-        typer.secho(f"Transaction recorded: {txn_id}",
-                    fg=typer.colors.GREEN)
+        typer.secho(f"Transaction recorded: {txn_id}", fg=typer.colors.GREEN)
+
+    except SystemExit:
+        sess = _norm_email(os.environ.get("BP_EMAIL"))
+        typer.secho(
+            f"You are logged in as '{sess}'. Cannot use a different --email.",
+            fg=typer.colors.RED,
+        )
+        raise
     except Exception as exc:
-        typer.secho(f"Add transaction failed: {exc}",
-                    fg=typer.colors.RED)
+        typer.secho(f"Add transaction failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
 
