@@ -114,3 +114,55 @@ def list_users(limit: int = 20) -> list[dict]:
     if limit and limit > 0:
         return records[:limit]
     return records
+
+
+def get_role(email: str) -> str:
+    """Return the role for a given email from the 'Role' worksheet.
+
+    Expects a sheet named exactly 'Role' with a header row that includes
+    'email' and 'role'. If the sheet doesn't exist or no matching row is
+    found, returns 'user' by default.
+    """
+    try:
+        email_norm = normalize_email(email)
+        client = get_client()
+        sheet = get_sheet(client)
+        try:
+            ws = sheet.worksheet("Role")
+        except Exception:
+            return "user"
+        for row in ws.get_all_records():
+            if (row.get("email", "") or "").strip().lower() == email_norm:
+                return (row.get("role", "user") or "user").strip().lower()
+        return "user"
+    except Exception:
+        # On any errors, default to least-privileged role
+        return "user"
+
+
+def set_role(email: str, role: str) -> None:
+    """Create/update a role mapping in the 'Role' worksheet.
+
+    If the sheet is missing, it will be created with headers ['email','role'].
+    """
+    email_norm = normalize_email(require_nonempty(email, "Email"))
+    role_norm = (require_nonempty(role, "Role").strip().lower())
+    if role_norm not in {"user", "editor"}:
+        raise ValueError("Role must be 'user' or 'editor'.")
+
+    client = get_client()
+    sheet = get_sheet(client)
+    try:
+        ws = sheet.worksheet("Role")
+    except Exception:
+        ws = sheet.add_worksheet(title="Role", rows=1000, cols=2)
+        ws.update("A1:B1", [["email", "role"]])
+
+    # Try to find existing row to update
+    records = ws.get_all_records()
+    for idx, row in enumerate(records, start=2):  # data starts on row 2
+        if (row.get("email", "") or "").strip().lower() == email_norm:
+            ws.update_cell(idx, 2, role_norm)
+            return
+    # Append new mapping
+    ws.append_row([email_norm, role_norm], value_input_option="USER_ENTERED")
