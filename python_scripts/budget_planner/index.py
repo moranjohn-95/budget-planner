@@ -39,6 +39,17 @@ def resolve_email_for_action(arg_email: Optional[str], *, require_login: bool = 
     return _session_email(arg_email, require=require_login) or ""
 
 
+def require_role(expected: str) -> None:
+    """Exit with an error unless the session role matches expected."""
+    role = session_role()
+    if role != (expected or "").strip().lower():
+        typer.secho(
+            f"This action requires role '{expected}'. Your role is '{role}'.",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=1)
+
+
 def _norm_email(value: str | None) -> str | None:
     """Lower/trim an email for consistent comparison."""
     if value is None:
@@ -634,6 +645,44 @@ def cli_logout() -> None:
         typer.secho("Logged out.", fg=typer.colors.GREEN)
     else:
         typer.echo("No active session.")
+
+
+@app.command("set-role")
+def cli_set_role(
+    target_email: Optional[str] = typer.Option(
+        None,
+        "--email",
+        prompt="Email to change",
+        help="Account email to assign a role to.",
+    ),
+    role: Optional[str] = typer.Option(
+        None,
+        "--role",
+        prompt="Role (user/editor)",
+        help="Role to assign (user or editor).",
+    ),
+) -> None:
+    """Assign a role to an account (editor-only)."""
+    try:
+        require_role("editor")
+
+        if not target_email:
+            raise typer.BadParameter("--email is required")
+        role_norm = (role or "").strip().lower()
+        if role_norm not in {"user", "editor"}:
+            raise typer.BadParameter("--role must be 'user' or 'editor'")
+
+        auth.set_role(target_email, role_norm)
+        typer.secho(
+            f"Set role for {target_email.strip().lower()} to {role_norm}.",
+            fg=typer.colors.GREEN,
+        )
+    except typer.BadParameter as exc:
+        typer.secho(str(exc), fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+    except Exception as exc:
+        typer.secho(f"set-role failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
 
 
 def main() -> None:

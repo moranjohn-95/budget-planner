@@ -29,6 +29,7 @@ GUIDE_BODY = """
 - budget-status  Compare goals vs spend
 - summary        Totals by category
 - whoami         Show your account info
+- set-role       (editor) change a user's role
 - logout         Sign out
 - exit           Leave the terminal
 - menu           Show this help again
