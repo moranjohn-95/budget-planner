@@ -27,7 +27,7 @@ const wss = new WebSocketServer({ server, path: "/term" });
 wss.on("connection", (ws) => {
   // On Heroku (Linux), 'python' resolves to the correct interpreter.
   const shell = "python";
-  const p = pty.spawn(shell, ["-u", "run.py"], {
+  const p = pty.spawn(shell, ["-u", "run_interactive.py"], {
     name: "xterm-color",
     cols: 80,
     rows: 24,
