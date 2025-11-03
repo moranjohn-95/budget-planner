@@ -152,8 +152,14 @@ def cli_login(
     try:
         ok = auth.login(email=email, password=password)
         if ok:
-            os.environ["BP_EMAIL"] = _norm_email(email) or ""
-            typer.secho("Login successful.", fg=typer.colors.GREEN)
+            norm = _norm_email(email) or ""
+            os.environ["BP_EMAIL"] = norm
+            try:
+                role = auth.get_role(norm)
+            except Exception:
+                role = "user"
+            os.environ["BP_ROLE"] = role
+            typer.secho(f"Login successful (role: {role}).", fg=typer.colors.GREEN)
         else:
             typer.secho("Invalid email or password.", fg=typer.colors.RED)
             raise typer.Exit(code=1)

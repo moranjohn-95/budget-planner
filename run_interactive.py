@@ -45,8 +45,9 @@ GUIDE_EXAMPLES = """
 def print_guide() -> None:
     print(f"{BOLD}Welcome!{RESET}")
     sess = (os.environ.get("BP_EMAIL") or "").strip()
+    role = (os.environ.get("BP_ROLE") or "user").strip()
     if sess:
-        print(f"{BOLD}Logged in as:{RESET} {sess}\n")
+        print(f"{BOLD}Logged in as:{RESET} {sess} (role: {role})\n")
     else:
         print("")
     print(f"{BOLD}{CYAN}Things you can do:{RESET}")
