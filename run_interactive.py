@@ -11,10 +11,13 @@ import shlex
 from python_scripts.budget_planner.index import app
 
 
-GUIDE = """
-Welcome!
+# Simple ANSI helpers for headings
+RESET = "\x1b[0m"
+BOLD = "\x1b[1m"
+CYAN = "\x1b[36m"
 
-Things you can do:
+
+GUIDE_BODY = """
 - signup         Create an account
 - login          Sign in
 - add-txn        Add a transaction
@@ -24,10 +27,12 @@ Things you can do:
 - budget-status  Compare goals vs spend
 - summary        Totals by category
 - whoami         Show your account info
+- logout         Sign out
 - exit           Leave the terminal
 - menu           Show this help again
+"""
 
-Quick examples (replace with your email):
+GUIDE_EXAMPLES = """
 - add-txn --email you@example.com --date 2025-10-30 --category groceries --amount 12.50 --note "Lunch"
 - list-txns --email you@example.com --limit 20
 - set-goal --email you@example.com --month 2025-10 --category transport --amount 45
@@ -36,7 +41,11 @@ Quick examples (replace with your email):
 
 
 def print_guide() -> None:
-    print(GUIDE)
+    print(f"{BOLD}Welcome!{RESET}\n")
+    print(f"{BOLD}{CYAN}Things you can do:{RESET}")
+    print(GUIDE_BODY.rstrip())
+    print(f"\n{BOLD}{CYAN}Quick examples (replace with your email):{RESET}")
+    print(GUIDE_EXAMPLES.rstrip())
 
 
 def _dispatch(line: str) -> None:
