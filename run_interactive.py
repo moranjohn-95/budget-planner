@@ -11,6 +11,34 @@ import shlex
 from python_scripts.budget_planner.index import app
 
 
+GUIDE = """
+Welcome!
+
+Things you can do:
+- signup         Create an account
+- login          Sign in
+- add-txn        Add a transaction
+- list-txns      Show recent transactions
+- set-goal       Set a monthly goal
+- list-goals     Show your goals
+- budget-status  Compare goals vs spend
+- summary        Totals by category
+- whoami         Show your account info
+- exit           Leave the terminal
+- menu           Show this help again
+
+Quick examples (replace with your email):
+- add-txn --email you@example.com --date 2025-10-30 --category groceries --amount 12.50 --note "Lunch"
+- list-txns --email you@example.com --limit 20
+- set-goal --email you@example.com --month 2025-10 --category transport --amount 45
+- budget-status --email you@example.com --month 2025-10
+"""
+
+
+def print_guide() -> None:
+    print(GUIDE)
+
+
 def _dispatch(line: str) -> None:
     """Run the Typer app with the provided argument string."""
     args = shlex.split(line)
@@ -26,7 +54,14 @@ def onboarding() -> None:
     print("Welcome to Budget Planner")
     while True:
         try:
-            choice = input("Start by typing 'login' or 'signup' [login/signup]: ").strip().lower()
+            choice = (
+                input(
+                    "Start by typing 'login' or 'signup' "
+                    "[login/signup]: "
+                )
+                .strip()
+                .lower()
+            )
         except (EOFError, KeyboardInterrupt):
             print("")
             return
@@ -42,6 +77,7 @@ def onboarding() -> None:
 def main() -> None:
     """Interactive loop after onboarding."""
     onboarding()
+    print_guide()
     print("\nBudget Planner - interactive mode")
     print("Type a command (or 'help --help', 'exit').\n")
 
@@ -56,10 +92,12 @@ def main() -> None:
             continue
         if line.lower() in {"exit", "quit"}:
             break
+        if line.lower() in {"menu", "guide", "helpme"}:
+            print_guide()
+            continue
 
         _dispatch(line)
 
 
 if __name__ == "__main__":
     main()
-
