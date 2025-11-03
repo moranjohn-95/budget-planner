@@ -10,6 +10,15 @@ from ..services import budgets as bud
 from ..utilities.validation import require_date, require_month
 
 
+# Output styling helpers for clearer sections
+def header(text: str) -> None:
+    typer.secho(text, fg=typer.colors.CYAN, bold=True)
+
+
+def sep(width: int = 40) -> None:
+    typer.secho("-" * width, fg=typer.colors.BRIGHT_BLACK)
+
+
 def _norm_email(value: str | None) -> str | None:
     """Lower/trim an email for consistent comparison."""
     if value is None:
@@ -299,6 +308,10 @@ def cli_list_txns(
         # Enforce current session; do not allow cross-user listing
         resolved = _session_email(email, require=True)
 
+        header("Transactions")
+        typer.secho("txn_id | date | category | amount | note", fg=typer.colors.CYAN, bold=True)
+        sep(70)
+
         # Validate date if provided
         if date:
             date = require_date(date)
@@ -487,6 +500,10 @@ def cli_list_goals(
             typer.echo("No goals found.")
             return
 
+        header("Goals")
+        typer.secho("category | monthly_goal", fg=typer.colors.CYAN, bold=True)
+        sep(40)
+
         for r in rows:
             cat = r.get("category_norm") or r.get("category")
             goal = r.get("monthly_goal")
@@ -535,8 +552,9 @@ def cli_budget_status(
             typer.echo("No goals to compare.")
             return
 
-        typer.echo("category        goal      spent     diff")
-        typer.echo("----------------------------------------")
+        header("Budget Status")
+        typer.secho("category        goal      spent     diff", fg=typer.colors.CYAN, bold=True)
+        sep(40)
 
         total_goal = 0.0
         total_spent = 0.0
@@ -559,7 +577,7 @@ def cli_budget_status(
 
             typer.echo(f"{cat:14}  {goal:8.2f}  {spent:8.2f}  {diff_colored}")
 
-        typer.echo("----------------------------------------")
+        sep(40)
         total_diff = total_goal - total_spent
         total_diff_text = f"{total_diff:8.2f}"
         total_diff_colored = (
