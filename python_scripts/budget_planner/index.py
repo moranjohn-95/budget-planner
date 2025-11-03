@@ -244,6 +244,7 @@ def cli_list_users(
     Produce list of users (email + created_at).
     """
     try:
+        require_role("editor")
         rows = auth.list_users(limit=limit)
         if not rows:
             typer.echo("No users found.")
