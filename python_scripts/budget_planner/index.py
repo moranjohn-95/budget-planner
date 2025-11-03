@@ -161,8 +161,8 @@ def cli_whoami(
 ) -> None:
     """Show basic details for the current session (or given email)."""
     try:
-        # Allow a one-time prompt if not logged in
-        resolved = _session_email(email, require=True, prompt_if_missing=True)
+        # Enforce session; do not prompt when not logged in
+        resolved = _session_email(email, require=True)
         user = auth.get_user_by_email(resolved or "")
         if not user:
             typer.secho(
@@ -350,9 +350,13 @@ def cli_sum_month(
     Option to filter for a single account email.
     """
     try:
-        total = reports.monthly_total(month=month, email=email)
-        if email:
-            typer.echo(f"Total for {month} ({email}): {total}")
+        # Validate month and enforce session email
+        month = require_month(month)
+        resolved = _session_email(email, require=True)
+
+        total = reports.monthly_total(month=month, email=resolved)
+        if resolved:
+            typer.echo(f"Total for {month} ({resolved}): {total}")
         else:
             typer.echo(f"Total for {month}: {total}")
     except Exception as exc:
@@ -365,7 +369,6 @@ def cli_summary(
     email: Optional[str] = typer.Option(
         None,
         "--email",
-        prompt="Email",
         help="Filter by account email.",
     ),
     date: Optional[str] = typer.Option(
@@ -378,7 +381,10 @@ def cli_summary(
     Show total spending grouped by category.
     """
     try:
-        summary = tx.summarize_by_category(email=email, date=date)
+        resolved = _session_email(email, require=True)
+        if date:
+            date = require_date(date)
+        summary = tx.summarize_by_category(email=resolved, date=date)
         if not summary:
             typer.echo("No transactions found.")
             raise typer.Exit(code=0)
@@ -474,7 +480,9 @@ def cli_list_goals(
         if month:
             month = require_month(month)
 
-        rows = bud.list_goals(email=email, month=month)
+        resolved = _session_email(email, require=True)
+
+        rows = bud.list_goals(email=resolved, month=month)
         if not rows:
             typer.echo("No goals found.")
             return
