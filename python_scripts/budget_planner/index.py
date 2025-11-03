@@ -391,7 +391,6 @@ def cli_set_goal(
     email: Optional[str] = typer.Option(
         None,
         "--email",
-        prompt="Email",
         help="Account email this goal belongs to.",
     ),
     month: Optional[str] = typer.Option(
@@ -420,16 +419,27 @@ def cli_set_goal(
     """
     Create or update a monthly goal for a user+month+category.
     """
-    month = require_month(month)
-
     try:
+        if month:
+            month = require_month(month)
+
+        # Enforce session email; do not allow cross-user goal edits
+        resolved = _session_email(email, require=True)
+
         bid = bud.set_goal(
-            email=email,
+            email=resolved or "",
             month=month,
             category=category,
             amount=amount,
         )
         typer.secho(f"Goal saved (id: {bid})", fg=typer.colors.GREEN)
+    except SystemExit:
+        sess = _norm_email(os.environ.get("BP_EMAIL"))
+        typer.secho(
+            f"You are logged in as '{sess}'. Cannot use a different --email.",
+            fg=typer.colors.RED,
+        )
+        raise
     except Exception as exc:
         typer.secho(f"Save failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
