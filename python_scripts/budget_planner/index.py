@@ -120,10 +120,7 @@ def cli_signup(
 @app.command("login")
 def cli_login(
     email: Optional[str] = typer.Option(
-        None,
-        "--email",
-        prompt="Email",
-        help="Account email.",
+        None, "--email", prompt="Email", help="Account email."
     ),
     password: Optional[str] = typer.Option(
         None,
@@ -133,16 +130,14 @@ def cli_login(
         help="Account password.",
     ),
 ) -> None:
-    """Verify credentials against the stored bcrypt hash."""
+    """Verify credentials and set a per-process session email."""
     try:
         ok = auth.login(email=email, password=password)
         if ok:
-            typer.secho("Login successful", fg=typer.colors.GREEN)
+            os.environ["BP_EMAIL"] = _norm_email(email) or ""
+            typer.secho("Login successful.", fg=typer.colors.GREEN)
         else:
-            typer.secho(
-                "Invalid email or password",
-                fg=typer.colors.RED,
-            )
+            typer.secho("Invalid email or password.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
     except Exception as exc:
         typer.secho(f"Login failed: {exc}", fg=typer.colors.RED)
