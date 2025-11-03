@@ -147,17 +147,13 @@ def cli_login(
 @app.command("whoami")
 def cli_whoami(
     email: Optional[str] = typer.Option(
-        None,
-        "--email",
-        prompt="Email",
-        help="Account email to look up.",
+        None, "--email", help="Account email to look up."
     ),
 ) -> None:
-    """
-    Show basic details for a user by email.
-    """
+    """Show basic details for the current session (or given email)."""
     try:
-        user = auth.get_user_by_email(email)
+        resolved = _session_email(email, require=True)
+        user = auth.get_user_by_email(resolved or "")
         if not user:
             typer.secho(
                 "No account found for that email.",
@@ -168,6 +164,13 @@ def cli_whoami(
         typer.echo(f"user_id   : {user.get('user_id')}")
         typer.echo(f"email     : {user.get('email')}")
         typer.echo(f"created_at: {user.get('created_at')}")
+    except SystemExit:
+        sess = _norm_email(os.environ.get("BP_EMAIL"))
+        typer.secho(
+            f"You are logged in as '{sess}'. Cannot use a different --email.",
+            fg=typer.colors.RED,
+        )
+        raise
     except Exception as exc:
         typer.secho(f"Lookup failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
