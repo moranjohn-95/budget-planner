@@ -49,6 +49,19 @@ The Budget Planner is suitable for students, professionals, or families who need
 Users expect the application to be easy to use and informative. They should be able to sign up, log in, and manage their own budgets easily without seeing other users data. All inputs should be clear, with messages tp help if something goes wrong. Users also expect that reports and summaries will show correct information about their spending  habits and goals.
 
 ### User Stories 
+User stories were created to get a bettewr understanding of what a typical user would would feel while using a typical budget planner. 
+We look at user stories more in testing further brlow. 
+
+| **Title**                   | **User Story**                                                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Sign Up / Log In**        | I want to be able to create an account and log in securely knowing my data is safe |
+| **Add Transactions**        | I want to easily input new spending habits or income with so that I can track where my money goes. |
+| **View Transactions**       | I want to see a clear list of my past transactions so I can review all my spending history.                                   |
+| **Set Budget Goals**        | I want to set monthly goals for each category so I can plan how much I want to spend.                            |
+| **Compare Goals and Spend** | I want to see how my spending compares to my goals so I can understand if I am over or under budget.                           |
+| **Simple Commands**         | I want to use short and easy commands in the terminal so I can manage my budget without confusion.                        |
+| **Stay Logged In**          | I Dont want to have to keep logging in after each input.                                |
+| **Logout Option**           | I want to be able to log out when I finish, so I know my account is secure.    | 
 
 ## Features
 The features section below explains all the features available for the budget planner application. Its important to note that while the "editor" or site owner has all the features available that a regular user does. The editor also has additional functionality that is not available to a regular user and for good reason. 
