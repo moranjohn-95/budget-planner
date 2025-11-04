@@ -57,6 +57,13 @@ The features available to all regular users can be seen in the below table. A us
 
 #### Signup 
 
+Below are three screenshots that illustrate the signup/login flow.
+
+| Before | After | Unsuccessful login |
+|---|---|---|
+| ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful login](assets/images/screenshots/after-succesfull-login.png) | ![Unsuccessful login attempt](assets/images/screenshots/unsuccesfull-login-attempt.png) |
+
+
 ### Editor Only
 
 There are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
@@ -75,4 +82,3 @@ Some additional features of how the budget planner application behaves behind th
 - Headings and separators are styled for readability. Key figures/information are also highlighted for the same reason.
 - Added Terminal features for UX: `help` and `help <command>`, typos suggest “Did you mean …”, `Ctrl+C` cancels prompts; after login.
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
-
