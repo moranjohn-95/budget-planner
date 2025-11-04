@@ -96,7 +96,7 @@ A user can enter "sum-month" to see total spending for a specific month as seen 
 
 | Set Goal | List Goal | 
 |---|---|
-| ![Set Goal](assets/images/screenshots/set-goal.png) | ![List Goal](assets/images/screenshots/list-goal.png) | 
+| ![Set Goal](assets/images/screenshots/set-goal.png) | ![List Goal](assets/images/screenshots/list-goals.png) | 
 
 ### Editor Only
 
