@@ -77,11 +77,19 @@ In the first image below the change password feature can be seen. This again is 
 | ![Change Password](assets/images/screenshots/change-password-feature.png) | ![Logout Feature](assets/images/screenshots/logout.png) | 
 
 #### Add transactions/List transactions
-A user can add transactions by typing "add-txn" into the terminal. They are then asked to enter the date the transaction took place followed by entering a category. The amount is then entered followed by an optional note entry. A message the appears notifying the user the transaction has been recorded. (Meaning the transaction has succesfully been sent to our transactions google sheet). If a user wishes to see all of their transactions they simply type "list-txns", this provides a list of all their entered transacations (stored on the transactions google sheet) accompanied by dates, categories and notes if entered. 
+A user can add transactions by typing "add-txn" into the terminal. They are then asked to enter the date the transaction took place followed by entering a category. The amount is then entered followed by an optional note entry. A message the appears notifying the user the transaction has been recorded. (Meaning the transaction has succesfully been sent to our transactions google sheet). If a user wishes to see all of their transactions they simply type "list-txns", this provides a list of all their entered transacations (stored on the transactions google sheet) accompanied by dates, categories and notes if entered. (Can be filtered by user for editors)
 
 | Add transactions | List transactions | 
 |---|---|
 | ![Add transactions](assets/images/screenshots/add-transaction.png) | ![List Transactions](assets/images/screenshots/list-transactions.png) | 
+
+#### Sum Month/Summary
+A user can enter "sum-month" to see total spending for a specific month as seen in the first image below. A user can also type "summary" this option provides total spending by category as seen below. 
+
+| Sum Month | Summary | 
+|---|---|
+| ![Sum Month](assets/images/screenshots/sum-month.png) | ![Summary](assets/images/screenshots/summary.png) | 
+
 ### Editor Only
 
 There are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
