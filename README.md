@@ -177,4 +177,54 @@ There are many growth possibilites for the budget planner in the future. Below I
 | Charts and trends | Show simple graphs of spend versus goals by month so progress is easy to see. |
 | Recurring transactions | Let users mark bills or subscriptions as recurring so they auto‑add each month. |
 | Alerts/notifications | Optional alerts when a category is close to or over its goal, or when a large transaction is added. |
-| Two‑factor login  | Add an extra step during login (code from email/app) for more security. |
+| Two-factor login  | Add an extra step during login (code from email/app) for more security. |
+
+### Code Validation
+
+#### auth.py
+Please see the CI Python Linter test passed for auth.py below with no errors found.
+![auth.py CI pass](assets/images/testing/auth.py-clear.png)
+
+#### budgets.py
+Please see the CI Python Linter test passed for budgets.py below with no errors found.
+![budgets.py CI pass](assets/images/testing/budget.py-clear.png)
+
+#### constants.py
+Please see the CI Python Linter test passed for constants.py below with no errors found.
+![constants.py CI pass](assets/images/testing/constants.py-clear.png)
+
+#### index.py
+Please see the CI Python Linter test passed for index.py below with no errors found.
+![index.py CI pass](assets/images/testing/index.py-clear.png)
+
+#### __main__.py
+Please see the CI Python Linter test passed for __main__.py below with no errors found.
+![__main__.py CI pass](assets/images/testing/main.py-clear.png)
+
+#### models.py
+Please see the CI Python Linter test passed for models.py below with no errors found.
+![models.py CI pass](assets/images/testing/models.py-clear.png)
+
+#### reports.py
+Please see the CI Python Linter test passed for reports.py below with no errors found.
+![reports.py CI pass](assets/images/testing/reports.py-clear.png)
+
+#### run.py
+Please see the CI Python Linter test passed for run.py below with no errors found.
+![run.py CI pass](assets/images/testing/run.py-clear.png)
+
+#### run_interactive.py
+Please see the CI Python Linter test passed for run_interactive.py below with no errors found.
+![run_interactive.py CI pass](assets/images/testing/run_interactive.py-clear.png)
+
+#### sheets_gateway.py
+Please see the CI Python Linter test passed for sheets_gateway.py below with no errors found.
+![sheets_gateway.py CI pass](assets/images/testing/sheets.gateway.py-clear.png)
+
+#### transactions.py
+Please see the CI Python Linter test passed for transactions.py below with no errors found.
+![transactions.py CI pass](assets/images/testing/transactions.py-clear.png)
+
+#### validation.py
+Please see the CI Python Linter test passed for validation.py below with no errors found.
+![validation.py CI pass](assets/images/testing/validation.py-clear.png)
