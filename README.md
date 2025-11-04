@@ -107,10 +107,12 @@ This feature is a continuation from the set/list goals feature. This shows each 
 | ![Budget Status](assets/images/screenshots/budget-status.png) |
 
 #### Whoami/Exit/Menu
+The whoami feature allows users to double check what account they are logged into. Shows email user ID and the date the account was created.
+The exit feature allows users to exit the terminal (Without a log back in option). The menu feature allows for users to type "menu" if they are confused about any of the features and how to run them. 
 
 | whoami feature | exit feature | menu feature |
 |---|---|---|
-| ![whoami](assets/images/screenshots/whoami.png) | ![exit](assets/images/screenshots/signup-success.png) | ![menu](assets/images/screenshots/signup-unsuccessfull.png) |
+| ![whoami](assets/images/screenshots/whoami.png) | ![exit](assets/images/screenshots/exit.png) | ![menu](assets/images/screenshots/menu-normal.png) |
 
 ### Editor Only
 
