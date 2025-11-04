@@ -496,7 +496,6 @@ def cli_summary(
         sep(40)
         for cat, total in summary.items():
             typer.echo(f"{cat:15} {total:.2f}")
-            typer.echo(f"{cat:15} £{total:.2f}")
 
     except Exception as exc:
         typer.secho(f"Summary failed: {exc}", fg=typer.colors.RED)
