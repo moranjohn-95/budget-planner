@@ -21,12 +21,14 @@ from ..utilities.validation import (
 
 def hash_password(password: str) -> str:
     """Hash a password using bcrypt."""
+    # Make a safe hash so we don't save real passwords.
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
 def verify_password(password: str, hashed: str) -> bool:
     """Verify a password against its bcrypt hash."""
+    # Compare what the user typed to the saved hash.
     return bcrypt.checkpw(password.encode("utf-8"), hashed.encode("utf-8"))
 
 
@@ -51,6 +53,7 @@ def signup(email: str, password: str) -> bool:
     """
     Register a new user in the 'users' worksheet.
     """
+    # Basic checks: not empty, and a reasonable password length.
     email = normalize_email(require_nonempty(email, "Email"))
     password = require_nonempty(password, "Password")
 
@@ -74,6 +77,7 @@ def signup(email: str, password: str) -> bool:
     # UUID is used for greater secuirty and safety
     user_id = str(uuid.uuid4())
 
+    # Write the new user row to the sheet.
     ws.append_row([user_id, email, hashed_pw, created_at])
     print(f" User {email} registered successfully.")
     return True
@@ -83,6 +87,7 @@ def login(email: str, password: str) -> bool:
     """
     Authenticate a user by checking stored hash.
     """
+    # Try to find the user and check their password.
     email = normalize_email(require_nonempty(email, "Email"))
     password = require_nonempty(password, "Password")
 
@@ -150,6 +155,7 @@ def set_role(email: str, role: str) -> None:
     if role_norm not in {"user", "editor"}:
         raise ValueError("Role must be 'user' or 'editor'.")
 
+    # Look up the row for this email.
     client = get_client()
     sheet = get_sheet(client)
     try:

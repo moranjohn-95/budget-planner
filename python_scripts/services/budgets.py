@@ -32,6 +32,7 @@ BUDGET_HEADERS: List[str] = [
 
 def _ensure_budget_sheet(ws) -> None:
     """Create headers if sheet is empty; guard if mismatch."""
+    # Make sure the sheet uses the expected header row.
     values = ws.get_all_values()
     if not values:
         ws.append_row(BUDGET_HEADERS)
@@ -49,6 +50,7 @@ def set_goal(
     update a goal for (user_id, month and category_norm).
     Returns the budget_id.
     """
+    # Keep categories consistent (lowercase) and only allow known ones.
     cat_norm = (category or "").strip().lower()
     if cat_norm not in ALLOWED_CATEGORIES:
         allowed = ", ".join(ALLOWED_CATEGORIES)
@@ -73,6 +75,7 @@ def set_goal(
     ws = sheet.worksheet(BUDGET_SHEET)
     _ensure_budget_sheet(ws)
 
+    # If a matching row already exists, update it; else append a new row.
     rows = ws.get_all_records()
 
     for idx, row in enumerate(rows, start=2):
@@ -129,8 +132,10 @@ def goals_vs_spend(
     if month:
         month = require_month(month)
 
+    # Get this user's goals (optionally for a specific month).
     goals = list_goals(email=email, month=month)
 
+    # Gather this user's spend by category to compare with goals.
     rows = tx.list_transactions(email=email)
     spent_by_cat = defaultdict(float)
     for r in rows:

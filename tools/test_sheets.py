@@ -7,12 +7,14 @@ from python_scripts.budget_planner.sheets_gateway import verify_connection
 
 
 def load_scopes():
+    # Read scopes from the environment; fall back to a safe read-only scope.
     s = os.environ.get("GOOGLE_SCOPES", "").strip()
     return [x.strip() for x in s.split(",") if x.strip()] or \
            ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 
 def build_creds():
+    # Build credentials from either a file path or inline JSON.
     scopes = load_scopes()
     path = os.environ.get("GOOGLE_CREDS_PATH")
     inline = os.environ.get("GOOGLE_CREDS_JSON")
@@ -27,6 +29,7 @@ def build_creds():
 
 
 def main():
+    # Quick manual test: open the sheet, print first row, and append a row.
     load_dotenv()
     sheet_id = os.environ["SHEET_ID"]
     creds = build_creds()

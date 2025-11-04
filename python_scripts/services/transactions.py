@@ -36,6 +36,7 @@ def _ensure_txn_sheet(ws) -> None:
     Ensures the transactions sheet exists with the expected headers.
     If empty, write headers. If mismatched, raise for safety.
     """
+    # Read the first rows to check headers.
     values = ws.get_all_values()
     if not values:
         ws.append_row(TRANSACTIONS_HEADERS)
@@ -52,6 +53,7 @@ def _resolve_user_id(email: str) -> str:
     Lookup a user_id by email
     Raise if not found.
     """
+    # Find the user row so we can link the transaction to their id.
     user = auth.get_user_by_email(email)
     if not user:
         raise RuntimeError("No account found for that email.")
@@ -91,6 +93,7 @@ def add_transaction(
     if amount == 0.0:
         raise ValueError("Amount cannot be zero.")
 
+    # Keep categories consistent (lowercase) and only allow known ones.
     category_norm = (category or "").strip().lower()
     if category_norm not in ALLOWED_CATEGORIES:
         allowed = ", ".join(ALLOWED_CATEGORIES)
@@ -103,6 +106,7 @@ def add_transaction(
 
     _ensure_txn_sheet(ws)
 
+    # Create a unique id and timestamp for the row.
     txn_id = str(uuid.uuid4())
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     row = [txn_id, user_id, date, category_norm, amount, note, created_at]

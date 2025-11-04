@@ -25,6 +25,8 @@ def session_role() -> str:
     return (os.environ.get("BP_ROLE") or "user").strip().lower() or "user"
 
 
+# Pick which email to use for a command.
+# Uses the logged-in user by default; editors can override with --email.
 def resolve_email_for_action(arg_email: Optional[str], *, require_login: bool = True) -> str:
     """Resolve which email a command should act on.
 
@@ -52,6 +54,7 @@ def require_role(expected: str) -> None:
 
 
 # Input normalization helpers
+# Make sure we always use a simple hyphen in dates like 2025-10-30.
 def _clean_separators(s: Optional[str]) -> str:
     """Normalize separators to ASCII hyphen, handling common unicode dashes."""
     if not s:
@@ -66,6 +69,7 @@ def _clean_separators(s: Optional[str]) -> str:
     )
 
 
+# Turn values like 2025/10 or 202510 into 2025-10.
 def _normalize_month(value: Optional[str]) -> Optional[str]:
     """Coerce common month formats to YYYY-MM before strict validation."""
     if not value:
@@ -84,6 +88,7 @@ def _normalize_month(value: Optional[str]) -> Optional[str]:
     return value
 
 
+# Turn values like 2025/1/2 or 20250102 into 2025-01-02.
 def _normalize_date(value: Optional[str]) -> Optional[str]:
     """Coerce common date formats to YYYY-MM-DD before strict validation.
 
@@ -268,6 +273,7 @@ def cli_whoami(
     """Show basic details for the current session (or given email)."""
     try:
         # Allow editor to inspect another account via --email
+        # Use the current session email (or editor override).
         resolved = resolve_email_for_action(email, require_login=True)
         user = auth.get_user_by_email(resolved or "")
         if not user:
@@ -359,6 +365,7 @@ def cli_add_txn(
 
         resolved = resolve_email_for_action(email, require_login=True)
 
+        # Clean up the date before strict checking.
         date = _normalize_date(date)
         date = require_date(date)
 
@@ -413,6 +420,7 @@ def cli_list_txns(
 
         # Validate date if provided
         if date:
+            # Clean up the date before strict checking.
             date = _normalize_date(date)
             date = require_date(date)
 
@@ -551,6 +559,7 @@ def cli_set_goal(
     """
     try:
         if month:
+            # Clean up month before strict checking.
             month = _normalize_month(month)
             month = require_month(month)
 
@@ -594,6 +603,7 @@ def cli_list_goals(
     """
     try:
         if month:
+            # Clean up month before strict checking.
             month = _normalize_month(month)
             month = require_month(month)
 
@@ -643,6 +653,7 @@ def cli_budget_status(
     """
     try:
         if month:
+            # Clean up month before strict checking.
             month = _normalize_month(month)
             month = require_month(month)
 
@@ -709,6 +720,7 @@ def cli_budget_status(
 @app.command("logout")
 def cli_logout() -> None:
     """Clear the current session email."""
+    # Forget the saved user so next action requires login again.
     if os.environ.pop("BP_EMAIL", None):
         typer.secho("Logged out.", fg=typer.colors.GREEN)
     else:
@@ -776,6 +788,7 @@ def cli_change_password(
 ) -> None:
     """Change password for the logged-in account."""
     try:
+        # Only the logged-in user can change their own password.
         # Require login and act on the session email only
         email = resolve_email_for_action(None, require_login=True)
 

@@ -60,6 +60,7 @@ GUIDE_EXAMPLES_EDITOR = """
 
 
 def print_guide() -> None:
+    # Show a simple banner and who is logged in.
     print(f"{BOLD}Welcome!{RESET}")
     sess = (os.environ.get("BP_EMAIL") or "").strip()
     role = (os.environ.get("BP_ROLE") or "user").strip()
@@ -91,7 +92,7 @@ def _dispatch(line: str) -> None:
     when running multiple commands in the same session.
     """
     args = shlex.split(line)
-    # leading spacer
+    # Add an empty line so consecutive commands are easier to read.
     if line.strip():
         print("")
     try:
@@ -123,7 +124,7 @@ def _dispatch(line: str) -> None:
             # Generic friendly error
             print(f"{RED}Command error: {exc}{RESET}")
     finally:
-        # trailing spacer
+        # Add a trailing empty line after each command.
         print("")
 
 
@@ -169,6 +170,7 @@ def main() -> None:
         try:
             line = input("bp> ").strip()
         except (EOFError, KeyboardInterrupt):
+            # Leave the terminal if the user presses Ctrl+C or closes input.
             print("\nGoodbye!\n")
             break
 
