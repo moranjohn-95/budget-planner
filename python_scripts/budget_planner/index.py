@@ -52,11 +52,25 @@ def require_role(expected: str) -> None:
 
 
 # Input normalization helpers
+def _clean_separators(s: Optional[str]) -> str:
+    """Normalize separators to ASCII hyphen, handling common unicode dashes."""
+    if not s:
+        return ""
+    return (
+        s.strip()
+        .replace("/", "-")
+        .replace(".", "-")
+        .replace("–", "-")  # en dash
+        .replace("—", "-")  # em dash
+        .replace("−", "-")  # minus sign
+    )
+
+
 def _normalize_month(value: Optional[str]) -> Optional[str]:
     """Coerce common month formats to YYYY-MM before strict validation."""
     if not value:
         return value
-    raw = value.strip().replace("/", "-").replace(".", "-")
+    raw = _clean_separators(value)
     m = re.match(r"^(\d{4})-(\d{1,2})$", raw)
     if m:
         mm = int(m.group(2))
@@ -80,7 +94,7 @@ def _normalize_date(value: Optional[str]) -> Optional[str]:
     """
     if not value:
         return value
-    raw = value.strip().replace("/", "-").replace(".", "-")
+    raw = _clean_separators(value)
     m = re.match(r"^(\d{4})-(\d{1,2})-(\d{1,2})$", raw)
     if m:
         mm = int(m.group(2))
