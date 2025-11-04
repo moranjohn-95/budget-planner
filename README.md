@@ -115,14 +115,31 @@ The exit feature allows users to exit the terminal (Without a log back in option
 | ![whoami](assets/images/screenshots/whoami.png) | ![exit](assets/images/screenshots/exit.png) | ![menu](assets/images/screenshots/menu-normal.png) |
 
 ### Editor Only
-
-There are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
+An editor has all the regular features at their disposal for personal details if they so wish. However, there are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
 
 | Capability | Command/How | Example |
 |---|---|---|
 | Act on another user’s data | Pass `--email` to self-scoped commands | `list-txns --email user@example.com`; `list-goals --email user@example.com --month 2025-10`; `sum-month --email user@example.com --month 2025-10`; `summary --email user@example.com`; `budget-status --email user@example.com --month 2025-10`; `whoami --email user@example.com` |
 | Manage roles | `set-role --email <user> --role editor\|user` | `set-role --email user@example.com --role editor` |
 | List users | `list-users [--limit N]` | `list-users --limit 10` |
+
+#### Manage Roles/List Users (Editor only)
+An editor can change the permisions on any user from "user" to "editor" if they wish. All users are regular "users" by default. As seen in the image below the editor simply types  "set-role" for the option to change a users role to appear. the list users function can be seen in the other image below. This function again is strictly only for editors. Regular users do not have permisions to view this information. 
+
+#### Act on another users data (Editors only - example)
+As seen in the image below and editor can access other users data or add a transaction if needed. This is a feature that was added in the case of emergency for any user that they could reach out to an editor for important information. The below example shows how an editor would view another users transaction.
+
+
+| Manage Roles | List Users | List users transactions |
+|---|---|---|
+| ![Manage Roles](assets/images/screenshots/set-role-editor.png) | ![List Users](assets/images/screenshots/list-users-editor.png) | ![list transactions editor](assets/images/screenshots/list-txns-email-editor.png) |
+
+#### Different menu view (editiors vs user)
+Another imporant feature is the different menus available depending on whos logged in. AN editor has more functionality then a standard user and so the menu is more descriptive with more options. Its also important that any commands specific to an editor are not listed for users to see, as to avoid confusion.
+
+| Editor menu | User Menu | 
+|---|---|
+| ![Editor Menu](assets/images/screenshots/instructions-editor.png) | ![User Menu](assets/images/screenshots/instructions-user.png) |
 
 ### Additional Features
 Some additional features of how the budget planner application behaves behind the scenes can be seen below.
