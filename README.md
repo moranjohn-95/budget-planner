@@ -179,7 +179,12 @@ There are many growth possibilites for the budget planner in the future. Below I
 | Alerts/notifications | Optional alerts when a category is close to or over its goal, or when a large transaction is added. |
 | Two-factor login  | Add an extra step during login (code from email/app) for more security. |
 
+## Testing
+
 ### Code Validation
+All Python files in this project were tested regularly throughout development. Each time a new feature or update was added, the code was checked using the terminal to make sure all commands worked correctly and no errors appeared. The files were also reviewed using PEP8 standards to make sure they followed formatting rules, such as correct indentation and line length.
+
+All Python files were also tested using the Code Institute Python Linter, which checks that the code meets PEP8 requirements. No major errors were found, and any small warnings were fixed to ensure the project followed professional standards, as seen below.
 
 #### auth.py
 Please see the CI Python Linter test passed for auth.py below with no errors found.
@@ -228,3 +233,30 @@ Please see the CI Python Linter test passed for transactions.py below with no er
 #### validation.py
 Please see the CI Python Linter test passed for validation.py below with no errors found.
 ![validation.py CI pass](assets/images/testing/validation.py-clear.png)
+
+### Manual Testing
+
+#### Features 
+
+| Feature | Expected outcome | Results |
+|---|---|---|
+| Signup | Creates a new user and shows a success message. | works as should |
+| Login | Accepts correct email/password and logs the user in. | works as should |
+| Change password | Asks for current password, updates to a new one if correct. | works as should |
+| Logout | Clears the saved session so commands require login again. | works as should |
+| Add transaction | Saves a row with date, category, amount and note. | works as should |
+| List transactions | Shows recent transactions for the logged‑in user. | works as should |
+| Sum month | Shows the total spend for a given month. | works as should |
+| Summary | Shows totals by category (for a date if given). | works as should |
+| Set goal | Stores a monthly goal for a category and month. | works as should |
+| List goals | Lists saved goals (optionally filter by month). | works as should |
+| Budget status | Compares goals vs spend and colors the difference. | works as should |
+| Whoami | Shows the current user’s id, email and created date. | works as should |
+| Menu/Help | Prints the guide with commands and examples. | works as should |
+| Exit | Leaves the terminal session cleanly. | works as should |
+| Editor: list-users | Shows user list (editor only). | works as should |
+| Editor: set-role | Changes a user’s role to user/editor (editor only). | works as should |
+| Editor: per‑user filters | Editor can use --email to act on another user when allowed. | works as should |
+
+
+#### User Stories 
