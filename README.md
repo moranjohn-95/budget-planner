@@ -54,6 +54,8 @@ The features available to all regular users can be seen in the below table. A us
 | `list-goals` | Show your goals | `--month YYYY-MM` (optional) | `bp> list-goals --month 2025-10` |
 | `budget-status` | Compare goals vs spend (diff color-coded) | `--month YYYY-MM` | `bp> budget-status --month 2025-10` |
 | `whoami` | Show your account info | — | `bp> whoami` |
+| `exit` | exit (ends session) | — | `bp> exit` |
+| `menu` | Show menu/instructions | — | `bp> menu` |
 
 #### Login 
 Please see the below images relating to login. A user types "login" followed by being asked to enter an email address. Then a password is requested, after this a message is shown to confirm you have logged in successfully or unsuccesfully. Please note password field looks empty due to password hash feature, this is done to protect user entrys. 
@@ -89,6 +91,12 @@ A user can enter "sum-month" to see total spending for a specific month as seen 
 | Sum Month | Summary | 
 |---|---|
 | ![Sum Month](assets/images/screenshots/sum-month.png) | ![Summary](assets/images/screenshots/summary.png) | 
+
+#### Set Goal/List Goal
+
+| Set Goal | List Goal | 
+|---|---|
+| ![Set Goal](assets/images/screenshots/set-goal.png) | ![List Goal](assets/images/screenshots/list-goal.png) | 
 
 ### Editor Only
 
