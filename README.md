@@ -55,6 +55,7 @@ The features available to all regular users can be seen in the below table. A us
 | `budget-status` | Compare goals vs spend (diff color‑coded) | `--month YYYY-MM` | `bp> budget-status --month 2025-10` |
 | `whoami` | Show your account info | — | `bp> whoami` |
 
+#### Signup 
 
 ### Editor Only
 
