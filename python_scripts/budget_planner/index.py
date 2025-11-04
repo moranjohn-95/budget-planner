@@ -27,10 +27,13 @@ def session_role() -> str:
 
 # Pick which email to use for a command.
 # Uses the logged-in user by default; editors can override with --email.
-def resolve_email_for_action(arg_email: Optional[str], *, require_login: bool = True) -> str:
+def resolve_email_for_action(
+    arg_email: Optional[str], *, require_login: bool = True
+) -> str:
     """Resolve which email a command should act on.
 
-    - For editors: if --email is provided, use it; otherwise use the session email.
+    - For editors: if --email is provided,
+      use it; otherwise use the session email.
     - For users: require the session email and block cross-user actions.
     """
     role = session_role()
@@ -255,7 +258,10 @@ def cli_login(
             except Exception:
                 role = "user"
             os.environ["BP_ROLE"] = role
-            typer.secho(f"Login successful (role: {role}).", fg=typer.colors.GREEN)
+            typer.secho(
+                f"Login successful (role: {role}).",
+                fg=typer.colors.GREEN,
+            )
         else:
             typer.secho("Invalid email or password.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
@@ -415,7 +421,11 @@ def cli_list_txns(
         resolved = resolve_email_for_action(email, require_login=True)
 
         header("Transactions")
-        typer.secho("txn_id | date | category | amount | note", fg=typer.colors.CYAN, bold=True)
+        typer.secho(
+            "txn_id | date | category | amount | note",
+            fg=typer.colors.CYAN,
+            bold=True,
+        )
         sep(70)
 
         # Validate date if provided
@@ -669,7 +679,11 @@ def cli_budget_status(
             return
 
         header("Budget Status")
-        typer.secho("category        goal      spent     diff", fg=typer.colors.CYAN, bold=True)
+        typer.secho(
+            "category        goal      spent     diff",
+            fg=typer.colors.CYAN,
+            bold=True,
+        )
         sep(40)
 
         total_goal = 0.0
@@ -702,7 +716,8 @@ def cli_budget_status(
             else typer.style(total_diff_text, fg=typer.colors.RED)
         )
         typer.echo(
-            f"{'TOTAL':14}  {total_goal:8.2f}  {total_spent:8.2f}  {total_diff_colored}"
+            f"{'TOTAL':14}  {total_goal:8.2f}  "
+            f"{total_spent:8.2f}  {total_diff_colored}"
         )
 
     except SystemExit:
@@ -795,20 +810,29 @@ def cli_change_password(
         if not current_password:
             raise typer.BadParameter("Current password is required")
         if not new_password or not confirm_password:
-            raise typer.BadParameter("New password and confirmation are required")
+            raise typer.BadParameter(
+                "New password and confirmation are required"
+            )
         if new_password != confirm_password:
             typer.secho("Passwords do not match.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
         if len(new_password) < 6:
-            typer.secho("Password must be at least 6 characters.", fg=typer.colors.RED)
+            typer.secho(
+                "Password must be at least 6 characters.",
+                fg=typer.colors.RED,
+            )
             raise typer.Exit(code=1)
 
         user = auth.get_user_by_email(email)
         if not user:
-            typer.secho("No account found for this email.", fg=typer.colors.RED)
+            typer.secho(
+                "No account found for this email.",
+                fg=typer.colors.RED,
+            )
             raise typer.Exit(code=1)
 
-        if not auth.verify_password(current_password, user.get("password_hash", "")):
+        stored_hash = user.get("password_hash", "")
+        if not auth.verify_password(current_password, stored_hash):
             typer.secho("Current password is incorrect.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
 
@@ -830,6 +854,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-
