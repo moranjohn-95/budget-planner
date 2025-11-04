@@ -61,8 +61,15 @@ def print_guide() -> None:
 
 
 def _dispatch(line: str) -> None:
-    """Run the Typer app with the provided argument string."""
+    """Run the Typer app with the provided argument string.
+
+    Adds a blank line before and after each command to improve readability
+    when running multiple commands in the same session.
+    """
     args = shlex.split(line)
+    # leading spacer
+    if line.strip():
+        print("")
     try:
         app(args=args, prog_name="bp", standalone_mode=False)
     except SystemExit:
@@ -91,6 +98,9 @@ def _dispatch(line: str) -> None:
         else:
             # Generic friendly error
             print(f"{RED}Command error: {exc}{RESET}")
+    finally:
+        # trailing spacer
+        print("")
 
 
 def onboarding() -> None:
