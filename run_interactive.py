@@ -10,6 +10,7 @@ import shlex
 
 from python_scripts.budget_planner.index import app
 import os
+import difflib
 
 
 # Simple ANSI helpers for headings
@@ -66,6 +67,29 @@ def _dispatch(line: str) -> None:
     except SystemExit:
         # Typer/Click exits normally; suppress to keep REPL running
         pass
+    except Exception as exc:
+        # Try to suggest a command if the first token looks like a typo
+        name = (args[0].strip().lower() if args else "")
+        try:
+            names = []
+            try:
+                names = [c.name for c in getattr(app, "registered_commands", []) if getattr(c, "name", None)]
+            except Exception:
+                pass
+            if not names:
+                try:
+                    names = list(getattr(app, "_command").commands.keys())
+                except Exception:
+                    names = []
+            suggestion = difflib.get_close_matches(name, names, n=1, cutoff=0.6)
+        except Exception:
+            suggestion = []
+
+        if name and suggestion:
+            print(f"{RED}Unknown command '{name}'. Did you mean '{suggestion[0]}'?{RESET}")
+        else:
+            # Generic friendly error
+            print(f"{RED}Command error: {exc}{RESET}")
 
 
 def onboarding() -> None:
