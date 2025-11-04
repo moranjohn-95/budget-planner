@@ -56,29 +56,31 @@ The features available to all regular users can be seen in the below table. A us
 | `whoami` | Show your account info | — | `bp> whoami` |
 
 #### Login 
-
 Please see the below images relating to login. A user types "login" followed by being asked to enter an email address. Then a password is requested, after this a message is shown to confirm you have logged in successfully or unsuccesfully. Please note password field looks empty due to password hash feature, this is done to protect user entrys. 
 
 | Before entering details | After successful login | Unsuccessful login attempt |
 |---|---|---|
 | ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful login](assets/images/screenshots/after-succesfull-login.png) | ![Unsuccessful login attempt](assets/images/screenshots/unsuccesfull-login-attempt.png) |
 
-##### Signup
-
+#### Signup
 Please see the below images relating to signup. A user types "signup" followed by being asked to enter an email address. Then a password is requested to be entered twice to ensure accuracy. After this a message is shown to confirm you have logged in successfully or unsuccesfully. You are then required to login to start using the budget planner.
 
 | Before entering details | After successful singup | Unsuccessful signup attempt |
 |---|---|---|
 | ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful signup](assets/images/screenshots/signup-success.png) | ![Unsuccessful singup attempt](assets/images/screenshots/signup-unsuccessfull.png) |
 
-#### Change Password/log out
+#### Change Password/logout
+In the first image below the change password feature can be seen. This again is hashed as to protect the users new password. A user is required to be firslty logged in before aattempting to change password. The logout feature can be seen in the image on the right, this allows the user to log out form the session after the user has completed any tasks. 
 
-In the first image below the change password feature can be seen. 
-
-| Change Password | After successful login | 
+| Change Password | Logout Feature | 
 |---|---|
 | ![Change Password](assets/images/screenshots/change-password-feature.png) | ![Logout Feature](assets/images/screenshots/logout.png) | 
 
+#### Add transactions/List transactions
+
+| Add transactions | List transactions | 
+|---|---|
+| ![Add transactions](assets/images/screenshots/add-transaction.png) | ![List Transactions](assets/images/screenshots/list-transactions.png) | 
 ### Editor Only
 
 There are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
