@@ -108,11 +108,11 @@ def _dispatch(line: str) -> None:
         try:
             names = []
             try:
-            names = [
-                c.name
-                for c in getattr(app, "registered_commands", [])
-                if getattr(c, "name", None)
-            ]
+                names = [
+                    c.name
+                    for c in getattr(app, "registered_commands", [])
+                    if getattr(c, "name", None)
+                ]
             except Exception:
                 pass
             if not names:
