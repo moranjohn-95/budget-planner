@@ -37,10 +37,6 @@ The budget planner application has been designed to allow for different permissi
 
 Importanlty a regular user does not have any access to other users information and cannot act on their behalf.
 
-### App Flow Logic
-
-![App Flow Logic](assets/images/design/app-flow-logic.png)
-
 ### All Users
 The features available to all regular users can be seen in the below table. A user firslty signs up or logs in, once succesfully logged in a user can select from any of the below commands. All command options are also listed with descriptions and examples after login.
 
@@ -155,3 +151,5 @@ Some additional features of how the budget planner application behaves behind th
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
 
 ### App flow logic 
+
+![App Flow Logic](assets/images/design/app-flow-logic.png)
