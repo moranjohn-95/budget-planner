@@ -31,8 +31,14 @@
   - [Acknowledgements](#acknowledgements)
 
 ## Features
+The features section below explains all the features available for the budget planner application. Its important to note that while the "editor" or site owner has all the features available that a regular user does. The editor also has additional functionality that is not available to a regular user and for good reason. 
+
+The budget planner application has been designed to allow for different permissions. This was an important feature as to ensure any "editors" or site owner could make changes on behalf of regular application users if needed. For example a user that was locked out or for whatever reason didnt have access at the time to important information. The editor can act on behalf of the user if requested to maybe add transactions or withdrraw current budget status information. 
+
+Importanlty a regular user does not have any access to other users information and cannot act on their behalf.
 
 ### All Users
+The features available to all regular users can be seen in the below table. A user firslty signs up or logs in, once succesfully logged in a user can select from any of the below commands. All command options are also listed with desriptions and examples after login.
 
 | Command | What it does | Key options | Example |
 |---|---|---|---|
@@ -57,12 +63,12 @@
 | Manage roles | `set-role --email <user> --role editor\|user` | `set-role --email user@example.com --role editor` |
 | List users | `list-users [--limit N]` | `list-users --limit 10` |
 
-### Additional Features/Notes
+### Additional Features
 Some notes can be seen below as to better explain some additional features of how the budget planner application behaves behind the scenes. 
 
 - Roles are in the `Role` sheet (`email`, `role`). Missing entries default to `user`. This is an important feature as to differentiate between permissions.
 - Session variables (web terminal): `BP_EMAIL` (logged‑in user), `BP_ROLE` (editor/user).
 - Headings and separators are styled for readability. Key figures/information are also highlighted for the same reason.
-- Added Terminal features for UX: `help` and `help <command>` work, typos suggest “Did you mean …”, `Ctrl+C` cancels prompts; after login.
+- Added Terminal features for UX: `help` and `help <command>`, typos suggest “Did you mean …”, `Ctrl+C` cancels prompts; after login.
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
 
