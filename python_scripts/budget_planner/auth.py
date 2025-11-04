@@ -130,7 +130,7 @@ def get_role(email: str) -> str:
         try:
             ws = sheet.worksheet("Role")
         except Exception:
-    return "user"
+            return "user"
         for row in ws.get_all_records():
             if (row.get("email", "") or "").strip().lower() == email_norm:
                 return (row.get("role", "user") or "user").strip().lower()
