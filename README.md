@@ -100,12 +100,17 @@ Users can set goals by typing "set-goal". This feature allows users to esentiall
 | ![Set Goal](assets/images/screenshots/set-goal.png) | ![List Goal](assets/images/screenshots/list-goals.png) | 
 
 #### Budget Status
-This feature is a continuation from the set/list goals feature. This shows each category of budget with the goal and actual spend. As well the difference to show if the user is acheving the set goal or falling short. 
+This feature is a continuation from the set/list goals feature. This shows each category of budget with the goal and actual spend. As well as the difference to show if the user is acheving the set goal or falling short. Postive numbers are green and negative numbers appear in red to highlight this.
 
 | Budget Status | 
 |---|
 | ![Budget Status](assets/images/screenshots/budget-status.png) |
 
+#### Whoami/Exit/Menu
+
+| whoami feature | exit feature | menu feature |
+|---|---|---|
+| ![whoami](assets/images/screenshots/whoami.png) | ![exit](assets/images/screenshots/signup-success.png) | ![menu](assets/images/screenshots/signup-unsuccessfull.png) |
 
 ### Editor Only
 

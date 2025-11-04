@@ -169,12 +169,13 @@ def main() -> None:
         try:
             line = input("bp> ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("")
+            print("\nGoodbye!\n")
             break
 
         if not line:
             continue
         if line.lower() in {"exit", "quit"}:
+            print("Goodbye!\n")
             break
         # Support `help` and `help <command>` like many CLIs
         try:
