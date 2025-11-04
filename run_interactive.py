@@ -78,8 +78,7 @@ def print_guide() -> None:
     else:
         print(GUIDE_BODY_BASE.rstrip())
 
-    print(f"\n{BOLD}{CYAN}Quick examples:{RESET}")
-    print(GUIDE_EXAMPLES.rstrip())
+    # Quick examples removed for simplicity; session-bound commands need no email.
     if role == "editor":
         print(f"\n{BOLD}{CYAN}Editor examples (per-user filters):{RESET}")
         print(GUIDE_EXAMPLES_EDITOR.rstrip())
