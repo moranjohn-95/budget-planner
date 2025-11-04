@@ -151,6 +151,19 @@ Some additional features of how the budget planner application behaves behind th
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
 
 ### App flow logic 
-The below diagram shows how the app works from start to finish. You open the budget planner and either sign up or log in. After a successful login, the app retains the user information so you don’t need to enter your email again. From there you can choose commands like adding a transaction, listing transactions, setting or listing goals, checking budget status (with psotive/negative differences), viewing a summary, or changing your password. You can also show the menu, log out to end your session, or exit to close the terminal. If you are an editor, you also get extra options like listing users and setting roles, and you can act on another user’s data when needed.
+The below diagram shows how the app works from start to finish. You open the budget planner and either sign up or log in. After a successful login, the app retains the user information so you don’t need to enter your email again. From there you can choose commands like adding a transaction, listing transactions, setting or listing goals, checking budget status (with psotive/negative differences), viewing a summary, or changing your password. 
+You can also show the menu, log out to end your session, or exit to close the terminal. If you are an editor, you also get extra options like listing users and setting roles, and you can act on another user’s data when needed.
 
 ![App Flow Logic](assets/images/design/app-flow-logic.png)
+
+
+### Future Ideas / Potential Implementations
+
+| Future idea | Comments |
+|---|---|
+| Password reset with email confirmation | Let users request a reset, send a code or link to their email, verify it, then allow a new password. Add rate limits to stop abuse. |
+| CSV downloads | Let users download transactions, goals and summaries as CSV (for a month or all time). Handy for backups or sharing. |
+| Charts and trends | Show simple graphs of spend vs goals by month so progress is easy to see. |
+| Recurring transactions | Let users mark bills or subscriptions as recurring so they auto‑add each month. |
+| Alerts/notifications | Optional alerts when a category is close to or over its goal, or when a large transaction is added. |
+| Two‑factor login (optional) | Add an extra step during login (code from email/app) for more security. |
