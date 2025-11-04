@@ -71,6 +71,14 @@ Please see the below images relating to signup. A user types "signup" followed b
 |---|---|---|
 | ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful signup](assets/images/screenshots/signup-success.png) | ![Unsuccessful singup attempt](assets/images/screenshots/signup-unsuccessfull.png) |
 
+#### Change Password/log out
+
+In the first image below the change password feature can be seen. 
+
+| Change Password | After successful login | 
+|---|---|
+| ![Change Password](assets/images/screenshots/change-password-feature.png) | ![Logout Feature](assets/images/screenshots/logout.png) | 
+
 ### Editor Only
 
 There are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
