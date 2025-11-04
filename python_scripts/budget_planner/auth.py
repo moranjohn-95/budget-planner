@@ -130,7 +130,7 @@ def get_role(email: str) -> str:
         try:
             ws = sheet.worksheet("Role")
         except Exception:
-            return "user"
+    return "user"
         for row in ws.get_all_records():
             if (row.get("email", "") or "").strip().lower() == email_norm:
                 return (row.get("role", "user") or "user").strip().lower()
@@ -166,3 +166,29 @@ def set_role(email: str, role: str) -> None:
             return
     # Append new mapping
     ws.append_row([email_norm, role_norm], value_input_option="USER_ENTERED")
+
+
+def update_password_hash(email: str, new_hash: str) -> None:
+    """Update the password_hash for a given email in the 'users' worksheet.
+
+    Looks up the row by email (case-insensitive) and updates the
+    password_hash column. Raises a ValueError if the user is not found
+    or the sheet does not include the expected headers.
+    """
+    client = get_client()
+    sheet = get_sheet(client)
+    ws = sheet.worksheet("users")
+
+    headers = ws.row_values(1)
+    try:
+        col_idx = headers.index("password_hash") + 1  # 1-based index
+    except ValueError as exc:
+        raise ValueError("'users' sheet missing 'password_hash' header") from exc
+
+    target = normalize_email(email)
+    records = ws.get_all_records()
+    for row_idx, row in enumerate(records, start=2):
+        if normalize_email(row.get("email", "")) == target:
+            ws.update_cell(row_idx, col_idx, new_hash)
+            return
+    raise ValueError("No account found for this email.")

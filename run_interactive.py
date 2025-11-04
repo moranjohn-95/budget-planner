@@ -30,6 +30,7 @@ GUIDE_BODY = """
 - summary        Totals by category
 - whoami         Show your account info
 - set-role       (editor) change a user's role
+- change-password Change your password
 - logout         Sign out
 - exit           Leave the terminal
 - menu           Show this help again

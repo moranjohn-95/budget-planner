@@ -683,6 +683,66 @@ def cli_set_role(
     except typer.BadParameter as exc:
         typer.secho(str(exc), fg=typer.colors.RED)
         raise typer.Exit(code=1)
+
+
+@app.command("change-password")
+def cli_change_password(
+    current_password: Optional[str] = typer.Option(
+        None,
+        "--current",
+        prompt=True,
+        hide_input=True,
+        help="Your current password.",
+    ),
+    new_password: Optional[str] = typer.Option(
+        None,
+        "--new",
+        prompt="New password",
+        hide_input=True,
+        help="Your new password.",
+    ),
+    confirm_password: Optional[str] = typer.Option(
+        None,
+        "--confirm",
+        prompt="Confirm new password",
+        hide_input=True,
+        help="Confirm the new password.",
+    ),
+) -> None:
+    """Change password for the logged-in account."""
+    try:
+        # Require login and act on the session email only
+        email = resolve_email_for_action(None, require_login=True)
+
+        if not current_password:
+            raise typer.BadParameter("Current password is required")
+        if not new_password or not confirm_password:
+            raise typer.BadParameter("New password and confirmation are required")
+        if new_password != confirm_password:
+            typer.secho("Passwords do not match.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+        if len(new_password) < 6:
+            typer.secho("Password must be at least 6 characters.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+
+        user = auth.get_user_by_email(email)
+        if not user:
+            typer.secho("No account found for this email.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+
+        if not auth.verify_password(current_password, user.get("password_hash", "")):
+            typer.secho("Current password is incorrect.", fg=typer.colors.RED)
+            raise typer.Exit(code=1)
+
+        new_hash = auth.hash_password(new_password)
+        auth.update_password_hash(email, new_hash)
+        typer.secho("Password updated.", fg=typer.colors.GREEN)
+    except typer.BadParameter as exc:
+        typer.secho(str(exc), fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+    except Exception as exc:
+        typer.secho(f"Change password failed: {exc}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
     except Exception as exc:
         typer.secho(f"set-role failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
