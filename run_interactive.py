@@ -50,11 +50,13 @@ GUIDE_EXAMPLES = """
 - budget-status --month 2025-10
 """
 
-# Extra examples editors can run against other users (session-aware with overrides)
+# Extra examples editors can run against other users
+# (session-aware, with --email overrides)
 GUIDE_EXAMPLES_EDITOR = """
 - whoami --email user@example.com
 - list-txns --email user@example.com --limit 10
-- set-goal --email user@example.com --month 2025-10 --category groceries --amount 200
+- set-goal --email user@example.com --month 2025-10 --category groceries
+  --amount 200
 - budget-status --email user@example.com --month 2025-10
 """
 
@@ -79,7 +81,7 @@ def print_guide() -> None:
     else:
         print(GUIDE_BODY_BASE.rstrip())
 
-    # Quick examples removed for simplicity; session-bound commands need no email.
+    # Note: examples for regular users are session-bound (no --email needed).
     if role == "editor":
         print(f"\n{BOLD}{CYAN}Editor examples (per-user filters):{RESET}")
         print(GUIDE_EXAMPLES_EDITOR.rstrip())
@@ -106,7 +108,11 @@ def _dispatch(line: str) -> None:
         try:
             names = []
             try:
-                names = [c.name for c in getattr(app, "registered_commands", []) if getattr(c, "name", None)]
+            names = [
+                c.name
+                for c in getattr(app, "registered_commands", [])
+                if getattr(c, "name", None)
+            ]
             except Exception:
                 pass
             if not names:
@@ -114,12 +120,20 @@ def _dispatch(line: str) -> None:
                     names = list(getattr(app, "_command").commands.keys())
                 except Exception:
                     names = []
-            suggestion = difflib.get_close_matches(name, names, n=1, cutoff=0.6)
+            suggestion = difflib.get_close_matches(
+                name,
+                names,
+                n=1,
+                cutoff=0.6,
+            )
         except Exception:
             suggestion = []
 
         if name and suggestion:
-            print(f"{RED}Unknown command '{name}'. Did you mean '{suggestion[0]}'?{RESET}")
+            print(
+                f"{RED}Unknown command '{name}'. "
+                f"Did you mean '{suggestion[0]}'?{RESET}"
+            )
         else:
             # Generic friendly error
             print(f"{RED}Command error: {exc}{RESET}")
@@ -136,7 +150,9 @@ def onboarding() -> None:
     """
     while True:
         try:
-            choice = input("Start by typing 'login' or 'signup' [login/signup]: ").strip().lower()
+            choice = input(
+                "Start by typing 'login' or 'signup' [login/signup]: "
+            ).strip().lower()
         except (EOFError, KeyboardInterrupt):
             print("")
             return
@@ -147,7 +163,10 @@ def onboarding() -> None:
                 # Logged in; proceed to guide
                 return
             # Login failed: show concise retry hint and loop again
-            print(f"{RED}Login failed. Try again or type 'signup' to create an account.{RESET}")
+            print(
+                f"{RED}Login failed. Try again or type 'signup' "
+                f"to create an account.{RESET}"
+            )
             continue
 
         if choice in {"signup", "s"}:
