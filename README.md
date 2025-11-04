@@ -151,5 +151,6 @@ Some additional features of how the budget planner application behaves behind th
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
 
 ### App flow logic 
+The below diagram shows how the app works from start to finish. You open the budget planner and either sign up or log in. After a successful login, the app retains the user information so you don’t need to enter your email again. From there you can choose commands like adding a transaction, listing transactions, setting or listing goals, checking budget status (with psotive/negative differences), viewing a summary, or changing your password. You can also show the menu, log out to end your session, or exit to close the terminal. If you are an editor, you also get extra options like listing users and setting roles, and you can act on another user’s data when needed.
 
 ![App Flow Logic](assets/images/design/app-flow-logic.png)
