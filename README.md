@@ -10,7 +10,6 @@
   - [User Requirements & Expectations](#user-requirements--expectations)
   - [User Stories](#user-stories)
 - [Design](#design)
-  - [Wireframes](#wireframes)
 - [Features](#features)
   - [App Flow Logic](#app-flow-logic)
   - [Future Ideas / Potential Implementations](#future-ideas--potential-implementations)
@@ -35,10 +34,21 @@ The goal of this project is to create a simple Budget Planner that helps users m
 The budget planner then compares what has been spent against each goal and shows if the user is over or under budget. It runs in on Heroku (an interactive web terminal), so users can access all features easily from a browser without installing anything. The main aim is to make budgeting straigt forward and accessible for everyone.
 
 ## User Goals
+The overall goal here is for users to have an easy way to manage their money and track spending. Users want to be able to record transactions, set monthly budgets, and see how their spending compares to their goals. They should be able to create an account, log in safely, and view only their own data. The app helps users stay organised and understand where their money is going.
 
 ## Site Owner Goals
+As site owner the overall goal is to provide a straightforward and easy to use tool that helps people manage their budgets. I want to make sure the app runs correctly and keeps data safe.
 
 ## User Experience
+The budget planner is designed to be easy to follow and understand. When users open the web terminal, they are guided through simple prompts such as signing up, logging in, and adding transactions. The system gives clear feedback and colour-coded results. So users always know if they are over or under budget. It also works well on both desktop and mobile devices to give a smooth experience wherever it’s used.
+
+### Target Audience 
+The Budget Planner is suitable for students, professionals, or families who need a to plan n easy way to plan budgets. The app is also useful for anyone new to budgeting who prefers a clear and friendly system without over complicated financial features.
+
+### User Requirements & Exepectations
+Users expect the application to be easy to use and informative. They should be able to sign up, log in, and manage their own budgets easily without seeing other users data. All inputs should be clear, with messages tp help if something goes wrong. Users also expect that reports and summaries will show correct information about their spending  habits and goals.
+
+### User Stories 
 
 ## Features
 The features section below explains all the features available for the budget planner application. Its important to note that while the "editor" or site owner has all the features available that a regular user does. The editor also has additional functionality that is not available to a regular user and for good reason. 
@@ -235,8 +245,10 @@ Please see the CI Python Linter test passed for validation.py below with no erro
 ![validation.py CI pass](assets/images/testing/validation.py-clear.png)
 
 ### Manual Testing
+Manual testing was also carried out to ensure everything worked as expected. Each feature was tested to ensure the expeced outcome was pulling through. We also then tested our User Stories with the features to ensure users expectations were matched. 
 
 #### Features 
+In the below table all manual testing related to features was carried out. The results can be seen below.
 
 | Feature | Expected outcome | Results |
 |---|---|---|
