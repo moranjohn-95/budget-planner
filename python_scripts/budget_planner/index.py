@@ -2,6 +2,7 @@ from typing import Optional
 
 import typer
 import os
+import re
 from . import auth
 from python_scripts.services import transactions as tx
 from ..services import reports
@@ -48,6 +49,51 @@ def require_role(expected: str) -> None:
             fg=typer.colors.RED,
         )
         raise typer.Exit(code=1)
+
+
+# Input normalization helpers
+def _normalize_month(value: Optional[str]) -> Optional[str]:
+    """Coerce common month formats to YYYY-MM before strict validation."""
+    if not value:
+        return value
+    raw = value.strip().replace("/", "-").replace(".", "-")
+    m = re.match(r"^(\d{4})-(\d{1,2})$", raw)
+    if m:
+        mm = int(m.group(2))
+        if 1 <= mm <= 12:
+            return f"{m.group(1)}-{mm:02d}"
+    m2 = re.match(r"^(\d{4})(\d{2})$", raw)
+    if m2:
+        mm = int(m2.group(2))
+        if 1 <= mm <= 12:
+            return f"{m2.group(1)}-{mm:02d}"
+    return value
+
+
+def _normalize_date(value: Optional[str]) -> Optional[str]:
+    """Coerce common date formats to YYYY-MM-DD before strict validation.
+
+    Accepts:
+      - YYYY-M-D, YYYY-MM-D, YYYY-M-DD
+      - YYYY/MM/DD, YYYY.MM.DD
+      - YYYYMMDD (8 digits)
+    """
+    if not value:
+        return value
+    raw = value.strip().replace("/", "-").replace(".", "-")
+    m = re.match(r"^(\d{4})-(\d{1,2})-(\d{1,2})$", raw)
+    if m:
+        mm = int(m.group(2))
+        dd = int(m.group(3))
+        if 1 <= mm <= 12 and 1 <= dd <= 31:
+            return f"{m.group(1)}-{mm:02d}-{dd:02d}"
+    m2 = re.match(r"^(\d{4})(\d{2})(\d{2})$", raw)
+    if m2:
+        mm = int(m2.group(2))
+        dd = int(m2.group(3))
+        if 1 <= mm <= 12 and 1 <= dd <= 31:
+            return f"{m2.group(1)}-{mm:02d}-{dd:02d}"
+    return value
 
 
 def _norm_email(value: str | None) -> str | None:
@@ -299,6 +345,7 @@ def cli_add_txn(
 
         resolved = resolve_email_for_action(email, require_login=True)
 
+        date = _normalize_date(date)
         date = require_date(date)
 
         txn_id = tx.add_transaction(
@@ -352,6 +399,7 @@ def cli_list_txns(
 
         # Validate date if provided
         if date:
+            date = _normalize_date(date)
             date = require_date(date)
 
         rows = tx.list_transactions(
@@ -402,6 +450,7 @@ def cli_sum_month(
     """
     try:
         # Validate month and enforce session email
+        month = _normalize_month(month)
         month = require_month(month)
         resolved = resolve_email_for_action(email, require_login=True)
 
@@ -436,6 +485,7 @@ def cli_summary(
     try:
         resolved = resolve_email_for_action(email, require_login=True)
         if date:
+            date = _normalize_date(date)
             date = require_date(date)
         summary = tx.summarize_by_category(email=resolved, date=date)
         if not summary:
@@ -446,7 +496,6 @@ def cli_summary(
         sep(40)
         for cat, total in summary.items():
             typer.echo(f"{cat:15} {total:.2f}")
-            continue
             typer.echo(f"{cat:15} £{total:.2f}")
 
     except Exception as exc:
@@ -489,6 +538,7 @@ def cli_set_goal(
     """
     try:
         if month:
+            month = _normalize_month(month)
             month = require_month(month)
 
         # Editor can pass --email to set goals for another account
@@ -531,6 +581,7 @@ def cli_list_goals(
     """
     try:
         if month:
+            month = _normalize_month(month)
             month = require_month(month)
 
         resolved = resolve_email_for_action(email, require_login=True)
@@ -579,6 +630,7 @@ def cli_budget_status(
     """
     try:
         if month:
+            month = _normalize_month(month)
             month = require_month(month)
 
         # Enforce session email; block cross-user status checks
@@ -743,9 +795,6 @@ def cli_change_password(
     except Exception as exc:
         typer.secho(f"Change password failed: {exc}", fg=typer.colors.RED)
         raise typer.Exit(code=1)
-    except Exception as exc:
-        typer.secho(f"set-role failed: {exc}", fg=typer.colors.RED)
-        raise typer.Exit(code=1)
 
 
 def main() -> None:
@@ -755,4 +804,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
 
