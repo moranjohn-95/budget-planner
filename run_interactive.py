@@ -104,7 +104,7 @@ def main() -> None:
     onboarding()
     print_guide()
     print("\nBudget Planner - interactive mode")
-    print("Type a command (or 'help --help', 'exit').\n")
+    print("Type a command (or 'help'/'--help', 'exit').\n")
 
     while True:
         try:
@@ -117,6 +117,17 @@ def main() -> None:
             continue
         if line.lower() in {"exit", "quit"}:
             break
+        # Support `help` and `help <command>` like many CLIs
+        try:
+            parts = shlex.split(line)
+        except Exception:
+            parts = [line]
+        if parts and parts[0].lower() in {"help", "-h", "h"}:
+            if len(parts) == 1:
+                _dispatch("--help")
+            else:
+                _dispatch(" ".join(parts[1:] + ["--help"]))
+            continue
         if line.lower() in {"menu", "guide", "helpme"}:
             print_guide()
             continue
