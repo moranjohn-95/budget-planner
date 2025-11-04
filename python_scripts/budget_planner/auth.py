@@ -189,7 +189,9 @@ def update_password_hash(email: str, new_hash: str) -> None:
     try:
         col_idx = headers.index("password_hash") + 1  # 1-based index
     except ValueError as exc:
-        raise ValueError("'users' sheet missing 'password_hash' header") from exc
+        raise ValueError(
+            "'users' sheet missing 'password_hash' header"
+        ) from exc
 
     target = normalize_email(email)
     records = ws.get_all_records()
