@@ -405,6 +405,8 @@ def cli_sum_month(
         month = require_month(month)
         resolved = resolve_email_for_action(email, require_login=True)
 
+        header("Monthly Total")
+        sep(40)
         total = reports.monthly_total(month=month, email=resolved)
         if resolved:
             typer.echo(f"Total for {month} ({resolved}): {total}")
@@ -440,8 +442,8 @@ def cli_summary(
             typer.echo("No transactions found.")
             raise typer.Exit(code=0)
 
-        typer.echo("Category Summary:")
-        typer.echo("-------------------")
+        header("Category Summary")
+        sep(40)
         for cat, total in summary.items():
             typer.echo(f"{cat:15} {total:.2f}")
             continue
