@@ -1,4 +1,4 @@
-# budget-planner-p3
+Ôªø# budget-planner-p3
 
 ## Contents
 
@@ -42,10 +42,10 @@ The features available to all regular users can be seen in the below table. A us
 
 | Command | What it does | Key options | Example |
 |---|---|---|---|
-| `signup` | Create an account | ó | `bp> signup` |
-| `login` | Sign in (sets session) | ó | `bp> login` |
+| `signup` | Create an account | ‚Äî | `bp> signup` |
+| `login` | Sign in (sets session) | ‚Äî | `bp> login` |
 | `change-password` | Change your password | `--current`, `--new`, `--confirm` | `bp> change-password` |
-| `logout` | Sign out (clears session) | ó | `bp> logout` |
+| `logout` | Sign out (clears session) | ‚Äî | `bp> logout` |
 | `add-txn` | Add a transaction | `--date YYYY-MM-DD`, `--category`, `--amount`, `--note` | `bp> add-txn` |
 | `list-txns` | Show recent transactions | `--date YYYY-MM-DD`, `--limit` | `bp> list-txns --limit 20` |
 | `sum-month` | Show monthly total | `--month YYYY-MM` | `bp> sum-month --month 2025-10` |
@@ -53,15 +53,15 @@ The features available to all regular users can be seen in the below table. A us
 | `set-goal` | Set a monthly goal | `--month YYYY-MM`, `--category`, `--amount` | `bp> set-goal --month 2025-10 --category groceries --amount 50` |
 | `list-goals` | Show your goals | `--month YYYY-MM` (optional) | `bp> list-goals --month 2025-10` |
 | `budget-status` | Compare goals vs spend (diff color-coded) | `--month YYYY-MM` | `bp> budget-status --month 2025-10` |
-| `whoami` | Show your account info | ó | `bp> whoami` |
+| `whoami` | Show your account info | ‚Äî | `bp> whoami` |
 
 #### Signup 
 
 Below are three screenshots that illustrate the signup/login flow.
 
-| Before | After | Unsuccessful login |
+| Before entering details | After successful login | Unsuccessful login attempt |
 |---|---|---|
-| ![Before entering details](assets/images/screenshots/before-login-is-entered.png)<br/><sub><em>Before entering details</em></sub> | ![After successful login](assets/images/screenshots/after-succesfull-login.png)<br/><sub><em>After successful login</em></sub> | ![Unsuccessful login attempt](assets/images/screenshots/unsuccesfull-login-attempt.png)<br/><sub><em>Unsuccessful login attempt</em></sub> |
+| ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful login](assets/images/screenshots/after-succesfull-login.png) | ![Unsuccessful login attempt](assets/images/screenshots/unsuccesfull-login-attempt.png) |
 
 
 ### Editor Only
@@ -70,7 +70,7 @@ There are some additional capabilites/features for editors as seen in the below 
 
 | Capability | Command/How | Example |
 |---|---|---|
-| Act on another userís data | Pass `--email` to self-scoped commands | `list-txns --email user@example.com`; `list-goals --email user@example.com --month 2025-10`; `sum-month --email user@example.com --month 2025-10`; `summary --email user@example.com`; `budget-status --email user@example.com --month 2025-10`; `whoami --email user@example.com` |
+| Act on another user‚Äôs data | Pass `--email` to self-scoped commands | `list-txns --email user@example.com`; `list-goals --email user@example.com --month 2025-10`; `sum-month --email user@example.com --month 2025-10`; `summary --email user@example.com`; `budget-status --email user@example.com --month 2025-10`; `whoami --email user@example.com` |
 | Manage roles | `set-role --email <user> --role editor\|user` | `set-role --email user@example.com --role editor` |
 | List users | `list-users [--limit N]` | `list-users --limit 10` |
 
@@ -80,6 +80,7 @@ Some additional features of how the budget planner application behaves behind th
 - Roles are in the `Role` sheet (`email`, `role`). Missing entries default to `user`. This is an important feature as to differentiate between permissions.
 - Session variables (web terminal): `BP_EMAIL` (logged-in user), `BP_ROLE` (editor/user).
 - Headings and separators are styled for readability. Key figures/information are also highlighted for the same reason.
-- Added Terminal features for UX: `help` and `help <command>`, typos suggest ìDid you mean Öî, `Ctrl+C` cancels prompts; after login.
+- Added Terminal features for UX: `help` and `help <command>`, typos suggest ‚ÄúDid you mean ‚Ä¶‚Äù, `Ctrl+C` cancels prompts; after login.
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
+
 
