@@ -55,14 +55,21 @@ The features available to all regular users can be seen in the below table. A us
 | `budget-status` | Compare goals vs spend (diff color-coded) | `--month YYYY-MM` | `bp> budget-status --month 2025-10` |
 | `whoami` | Show your account info | — | `bp> whoami` |
 
-#### Signup 
+#### Login 
 
-Below are three screenshots that illustrate the signup/login flow.
+Please see the below images relating to login. A user types "login" followed by being asked to enter an email address. Then a password is requested, after this a message is shown to confirm you have logged in successfully or unsuccesfully. Please note password field looks empty due to password hash feature, this is done to protect user entrys. 
 
 | Before entering details | After successful login | Unsuccessful login attempt |
 |---|---|---|
 | ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful login](assets/images/screenshots/after-succesfull-login.png) | ![Unsuccessful login attempt](assets/images/screenshots/unsuccesfull-login-attempt.png) |
 
+##### Signup
+
+Please see the below images relating to signup. A user types "signup" followed by being asked to enter an email address. Then a password is requested to be entered twice to ensure accuracy. After this a message is shown to confirm you have logged in successfully or unsuccesfully. You are then required to login to start using the budget planner.
+
+| Before entering details | After successful singup | Unsuccessful signup attempt |
+|---|---|---|
+| ![Before entering details](assets/images/screenshots/before-login-is-entered.png) | ![After successful signup](assets/images/screenshots/signup-success.png) | ![Unsuccessful singup attempt](assets/images/screenshots/signup-unsuccessfull.png) |
 
 ### Editor Only
 
