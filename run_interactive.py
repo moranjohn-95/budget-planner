@@ -20,7 +20,7 @@ CYAN = "\x1b[36m"
 RED = "\x1b[31m"
 
 
-GUIDE_BODY = """
+GUIDE_BODY_BASE = """
 - signup         Create an account
 - login          Sign in
 - add-txn        Add a transaction
@@ -31,18 +31,31 @@ GUIDE_BODY = """
 - budget-status  Compare goals vs spend
 - summary        Totals by category
 - whoami         Show your account info
-- set-role       (editor) change a user's role
 - change-password Change your password
 - logout         Sign out
 - exit           Leave the terminal
 - menu           Show this help again
 """
 
+# Shown only for editors
+GUIDE_BODY_EDITOR = """
+- list-users     List all users
+- set-role       (editor) change a user's role
+"""
+
 GUIDE_EXAMPLES = """
-- add-txn --email you@example.com --date 2025-10-30 --category groceries --amount 12.50 --note "Lunch"
-- list-txns --email you@example.com --limit 20
-- set-goal --email you@example.com --month 2025-10 --category transport --amount 45
-- budget-status --email you@example.com --month 2025-10
+- add-txn --date 2025-10-30 --category groceries --amount 12.50 --note "Lunch"
+- list-txns --limit 20
+- set-goal --month 2025-10 --category transport --amount 45
+- budget-status --month 2025-10
+"""
+
+# Extra examples editors can run against other users (session-aware with overrides)
+GUIDE_EXAMPLES_EDITOR = """
+- whoami --email user@example.com
+- list-txns --email user@example.com --limit 10
+- set-goal --email user@example.com --month 2025-10 --category groceries --amount 200
+- budget-status --email user@example.com --month 2025-10
 """
 
 
@@ -54,10 +67,22 @@ def print_guide() -> None:
         print(f"{BOLD}Logged in as:{RESET} {sess} (role: {role})\n")
     else:
         print("")
-    print(f"{BOLD}{CYAN}Things you can do:{RESET}")
-    print(GUIDE_BODY.rstrip())
-    print(f"\n{BOLD}{CYAN}Quick examples (replace with your email):{RESET}")
+    title = "Things you can do"
+    if role == "editor":
+        title = f"{title} [Editor]"
+    print(f"{BOLD}{CYAN}{title}:{RESET}")
+    if role == "editor":
+        print(GUIDE_BODY_BASE.rstrip())
+        print(f"\n{BOLD}{CYAN}Editor commands:{RESET}")
+        print(GUIDE_BODY_EDITOR.rstrip())
+    else:
+        print(GUIDE_BODY_BASE.rstrip())
+
+    print(f"\n{BOLD}{CYAN}Quick examples:{RESET}")
     print(GUIDE_EXAMPLES.rstrip())
+    if role == "editor":
+        print(f"\n{BOLD}{CYAN}Editor examples (per-user filters):{RESET}")
+        print(GUIDE_EXAMPLES_EDITOR.rstrip())
 
 
 def _dispatch(line: str) -> None:
