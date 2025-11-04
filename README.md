@@ -30,6 +30,16 @@
   - [Content Credits](#content-credits)
   - [Acknowledgements](#acknowledgements)
 
+## Project Aims 
+The goal of this project is to create a simple Budget Planner that helps users manage their money by tracking spending and setting monthly goals. The app allows users to sign up, log in, and securely save their data using Google Sheets. Once logged in, users can add transactions, view spending summaries, and set budget goals for different categories.
+The budget planner then compares what has been spent against each goal and shows if the user is over or under budget. It runs in on Heroku (an interactive web terminal), so users can access all features easily from a browser without installing anything. The main aim is to make budgeting straigt forward and accessible for everyone.
+
+## User Goals
+
+## Site Owner Goals
+
+## User Experience
+
 ## Features
 The features section below explains all the features available for the budget planner application. Its important to note that while the "editor" or site owner has all the features available that a regular user does. The editor also has additional functionality that is not available to a regular user and for good reason. 
 
@@ -158,12 +168,13 @@ You can also show the menu, log out to end your session, or exit to close the te
 
 
 ### Future Ideas / Potential Implementations
+There are many growth possibilites for the budget planner in the future. Below I have listed some of the main ideas that could be implemented going forward to really take it up a level and improve the overall offering to the users. 
 
 | Future idea | Comments |
 |---|---|
-| Password reset with email confirmation | Let users request a reset, send a code or link to their email, verify it, then allow a new password. Add rate limits to stop abuse. |
-| CSV downloads | Let users download transactions, goals and summaries as CSV (for a month or all time). Handy for backups or sharing. |
-| Charts and trends | Show simple graphs of spend vs goals by month so progress is easy to see. |
+| Password reset with email confirmation | Let users request a reset, send a code or link to their email, verify it, then allow a new password. |
+| CSV downloads | Let users download transactions, goals and summaries as CSV (for a month or all time). Good for backups or sharing. |
+| Charts and trends | Show simple graphs of spend versus goals by month so progress is easy to see. |
 | Recurring transactions | Let users mark bills or subscriptions as recurring so they auto‑add each month. |
 | Alerts/notifications | Optional alerts when a category is close to or over its goal, or when a large transaction is added. |
-| Two‑factor login (optional) | Add an extra step during login (code from email/app) for more security. |
+| Two‑factor login  | Add an extra step during login (code from email/app) for more security. |
