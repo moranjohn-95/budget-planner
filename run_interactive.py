@@ -24,8 +24,8 @@ GUIDE_BODY = """
 - signup         Create an account
 - login          Sign in
 - add-txn        Add a transaction
- - list-txns      Show recent transactions
- - sum-month      Show monthly total
+- list-txns      Show recent transactions
+- sum-month      Show monthly total
 - set-goal       Set a monthly goal
 - list-goals     Show your goals
 - budget-status  Compare goals vs spend

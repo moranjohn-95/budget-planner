@@ -38,7 +38,7 @@ The budget planner application has been designed to allow for different permissi
 Importanlty a regular user does not have any access to other users information and cannot act on their behalf.
 
 ### All Users
-The features available to all regular users can be seen in the below table. A user firslty signs up or logs in, once succesfully logged in a user can select from any of the below commands. All command options are also listed with desriptions and examples after login.
+The features available to all regular users can be seen in the below table. A user firslty signs up or logs in, once succesfully logged in a user can select from any of the below commands. All command options are also listed with descriptions and examples after login.
 
 | Command | What it does | Key options | Example |
 |---|---|---|---|
@@ -55,7 +55,10 @@ The features available to all regular users can be seen in the below table. A us
 | `budget-status` | Compare goals vs spend (diff color‑coded) | `--month YYYY-MM` | `bp> budget-status --month 2025-10` |
 | `whoami` | Show your account info | — | `bp> whoami` |
 
+
 ### Editor Only
+
+There are some additional capabilites/features for editors as seen in the below table. Editors can carry out tasks and retract information on the behalf of regular users if needed. Editors can also select roles (this is not optional for regular users). Once signed in the "user" or "editor" role is assigned to ensure what can and cannot be accessed. 
 
 | Capability | Command/How | Example |
 |---|---|---|
@@ -64,7 +67,7 @@ The features available to all regular users can be seen in the below table. A us
 | List users | `list-users [--limit N]` | `list-users --limit 10` |
 
 ### Additional Features
-Some notes can be seen below as to better explain some additional features of how the budget planner application behaves behind the scenes. 
+Some additional features of how the budget planner application behaves behind the scenes can be seen below.
 
 - Roles are in the `Role` sheet (`email`, `role`). Missing entries default to `user`. This is an important feature as to differentiate between permissions.
 - Session variables (web terminal): `BP_EMAIL` (logged‑in user), `BP_ROLE` (editor/user).
