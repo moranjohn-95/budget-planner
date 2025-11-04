@@ -93,11 +93,19 @@ A user can enter "sum-month" to see total spending for a specific month as seen 
 | ![Sum Month](assets/images/screenshots/sum-month.png) | ![Summary](assets/images/screenshots/summary.png) | 
 
 #### Set Goal/List Goal
-Users can set goals by typing "set-goal". This feature allows users to esentially set their budget allowance per month and category, then selecting the amount they do do not wish to exceed. "list-goals" then allows for all goals to be viewed as per the below image.
+Users can set goals by typing "set-goal". This feature allows users to esentially set their budget allowance per month and category, then selecting the amount they do not wish to exceed. "list-goals" then allows for all goals to be viewed as per the below image.
 
 | Set Goal | List Goal | 
 |---|---|
 | ![Set Goal](assets/images/screenshots/set-goal.png) | ![List Goal](assets/images/screenshots/list-goals.png) | 
+
+#### Budget Status
+This feature is a continuation from the set/list goals feature. This shows each category of budget with the goal and actual spend. As well the difference to show if the user is acheving the set goal or falling short. 
+
+| Budget Status | 
+|---|
+| ![Budget Status](assets/images/screenshots/budget-status.png) |
+
 
 ### Editor Only
 
