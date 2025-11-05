@@ -1,6 +1,6 @@
 # Budget-Planner-PP3
 
-An easy to use Budget Planner that can be run in a browser using an interactive terminal or from the CLI. A user can run a variety of commanands that enable the setting of monthly goals, entering transactions and more. Its a striaghtforward application that is suitable for anyone looking to get on top of their spending habits.
+An easy to use Budget Planner that can be run in a browser using an interactive terminal or from the CLI. A user can run a variety of commands that enable the setting of monthly goals, entering transactions and more. Its a striaghtforward application that is suitable for anyone looking to get on top of their spending habits.
 
 ![Responsive layout](assets/images/screenshots/am-i-responsive.png)
 Credit: [am i responsive](https://ui.dev/amiresponsive?url=https://budget-planner-p3-2560f12ec44b.herokuapp.com/terminal.html)
@@ -343,7 +343,7 @@ In the below table the results of the testing relating to user stories can be se
 | I want a quick reminder of commands. | menu/help | Type menu or help (or --help). | Clear guide with commands and short explanations is shown. | works as should |
 
 ## Bugs 
-The below are all bugs that were faced throughout the development of the budget planner application. As can be seen there was a solution for each bug which proved very affective.
+The below are all bugs that were faced throughout the development of the budget planner application. As can be seen below, there were solutions for each bug and the issues were resolved.
 
 | **Bug Title**                          | **Issue**                                                                                             | **Fix**                                                                                               |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -450,7 +450,7 @@ Your app will be live at: https://your-app-name.herokuapp.com/terminal.html
 
 ### Content Credits
 
-- [am i responsive](https://ui.dev/amiresponsive) - Responsive mockup tool used for the screenshot.
+- [am i responsive](https://ui.dev/amiresponsive) - Responsive tool used to showcase the budget planner on different devices.
 - [Markdown Guide](https://www.markdownguide.org/) - Help with table and formatting.
 
 ### Acknowledgements
