@@ -1,9 +1,11 @@
 # Budget-Planner-PP3
 
+An easy to use Budget Planner that can be run in a browser using an interactive terminal or from the CLI. A user can run a variety of commanands that enable the setting of monthly goals, entering transactions and more. Its a striaghtforward application that is suitable for anyone looking to get on top of their spending habits.
+
 ![Responsive layout](assets/images/screenshots/am-i-responsive.png)
 Credit: [am i responsive](https://ui.dev/amiresponsive?url=https://budget-planner-p3-2560f12ec44b.herokuapp.com/terminal.html)
 
-## Contents
+## Table of Contents
 
 - [Project Aims](#project-aims)
 - [User Goals](#user-goals)
@@ -232,23 +234,15 @@ There are many growth possibilites for the budget planner in the future. Below I
 - **CSS** - styles for the terminal page.
 
 ### Libraries & Programmes Used
-- **Typer** — library for creating easy-to-use CLI commands.
-
-- **bcrypt** — securely hashes and verifies passwords.
-
-- **gspread** — connects to Google Sheets (project database).
-
-- **google-auth / oauthlib** — authorizes secure access to the Google Sheets API.
-
-- **pandas** — data manipulation and calculations for reports.
-
-- **python-dotenv** — loads environment variables (e.g., API keys).
-
-- **colorama / Typer colors** — coloured text feedback (red for errors, green for success).
-
-- **pytest / coverage** — testing and code coverage.
-
-- **node-pty / ws** — live Python terminal over WebSockets.
+- [Typer](https://typer.tiangolo.com/) - library for creating easy-to-use CLI commands.
+- [bcrypt](https://pypi.org/project/bcrypt/) - securely hashes and verifies passwords.
+- [gspread](https://docs.gspread.org/) - connects to Google Sheets (project database).
+- [google-auth](https://googleapis.github.io/google-auth-library-python/latest/) / [oauthlib](https://oauthlib.readthedocs.io/) - authorizes secure access to the Google Sheets API.
+- [pandas](https://pandas.pydata.org/) - data manipulation and calculations for reports.
+- [python-dotenv](https://pypi.org/project/python-dotenv/) - loads environment variables.
+- [colorama](https://pypi.org/project/colorama/) / [Typer colors](https://typer.tiangolo.com/tutorial/printing/#colors) - coloured text feedback.
+- [pytest](https://docs.pytest.org/) / [coverage](https://coverage.readthedocs.io/) - testing and code coverage.
+- [node-pty](https://github.com/microsoft/node-pty) / [ws](https://github.com/websockets/ws) - live Python terminal over WebSockets.
 
 ## Testing
 
@@ -360,6 +354,7 @@ The below are all bugs that were faced throughout the development of the budget 
 
 
 ## Deployment
+The below steps showcase how to deploy effectively. 
 
 ### Local Setup
 
@@ -437,7 +432,24 @@ To deploy on Heroku:
 
 7) Open App when deploy completes.
 
-Your app will be live at:
+Your app will be live at: https://your-app-name.herokuapp.com/terminal.html
 
-```
-https://your-app-name.herokuapp.com/terminal.html
+## Credits
+
+- [Code Institute](https://codeinstitute.net/) - Learning material.
+- [Typer Docs](https://typer.tiangolo.com/) - CLI framework reference.
+- [gspread Docs](https://docs.gspread.org/) - Google Sheets client library.
+- [Google Sheets API](https://developers.google.com/sheets/api) - API and authentication setup.
+- [Heroku Dev Center](https://devcenter.heroku.com/) - Buildpacks and deployment help.
+- [node-pty](https://github.com/microsoft/node-pty) - PTY bridge used by the web terminal.
+
+### Content Credits
+
+- [am i responsive](https://ui.dev/amiresponsive) - Responsive mockup tool used for the screenshot.
+- [Markdown Guide](https://www.markdownguide.org/) - Help with table and formatting.
+- [W3Schools](https://www.w3schools.com/) - General troubleshooting and quick references.
+
+### Acknowledgements
+
+- Thanks to Code Institute mentors, tutors and the peer community for support during this project.
+
