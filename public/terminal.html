@@ -48,6 +48,17 @@
       term.open(document.getElementById('term'));
       fitAddon.fit();
 
+      // Adjust terminal font size on small screens to reduce wrapping
+      function applyMobileSizing() {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        term.options.fontSize = isMobile ? 12 : 14;
+        // Refit after size change
+        try { fitAddon.fit(); } catch (_) {}
+      }
+      applyMobileSizing();
+      window.addEventListener('resize', () => requestAnimationFrame(applyMobileSizing));
+      window.addEventListener('orientationchange', () => requestAnimationFrame(applyMobileSizing));
+
       const wsProto = (location.protocol === 'https:') ? 'wss://' : 'ws://';
       const ws = new WebSocket(wsProto + location.host + '/term');
 
