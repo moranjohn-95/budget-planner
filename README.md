@@ -1,5 +1,7 @@
 # Budget-Planner-PP3
 
+![Responsive layout – credit: am i responsive](assets/images/screenshots/am-i-responsive.png)
+
 ## Contents
 
 - [Project Aims](#project-aims)
