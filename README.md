@@ -342,3 +342,15 @@ In the below table the results of the testing relating to user stories can be se
 | I want to see how Im doing vs my goals. | budget-status | Run with optional month filter. | Table shows category, goal, spent and colored difference. | works as should |
 | I want to update my password safely. | change-password | Enter current password, new password and confirm. | Password updates successfully and confirmation is shown. | works as should |
 | I want a quick reminder of commands. | menu/help | Type menu or help (or --help). | Clear guide with commands and short explanations is shown. | works as should |
+
+## Bugs 
+The below are all bugs that were faced throughout the development of the budget planner application. As can be seen there was a solution for each bug which proved very affective.
+
+| **Bug Title**                          | **Issue**                                                                                             | **Fix**                                                                                               |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| CLI command not recognised             | Some commands such as `ist-txns` returned “No such command” errors.                                   | Spelling mistake fixed to `list-txns` and re-tested all command names.                                |
+| Wrong month filtering in budget report | The `budget-status` command caused an error due to missing `month` handling.                          | Updated `budgets.py` to handle month filtering safely and normalised category matching.               |
+| Missing environment variable           | The app crashed when trying to access Google Sheets API credentials.                                  | Added `.env` file and set environment variables on Heroku using `heroku config:set`. |
+| Duplicate goal entries                 | Setting a budget goal multiple times created duplicates in the Google Sheet.                          | Added logic in `budgets.py` to check if a goal already exists before creating new rows.              |
+| Colour formatting not displaying       | The red/green colour codes were not appearing correctly in the Heroku terminal.                       | Switched to using `typer.colors` for consistent colour output.                         |
+| Terminal output overflow on mobile     | On smaller screens - text in the web terminal overflowed outside the view area.                        | Added CSS rules to make the terminal container scrollable and responsive.                             |
