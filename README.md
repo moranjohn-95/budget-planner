@@ -1,6 +1,6 @@
 # Budget-Planner-PP3
 
-![Responsive layout – credit: am i responsive](assets/images/screenshots/am-i-responsive.png)
+<p align="center">`n  <img src="assets/images/screenshots/am-i-responsive.png" alt="Responsive layout - am i responsive" />`n  <br/>`n  <em>Responsive layout - credit: am i responsive</em>`n</p>
 
 ## Contents
 
@@ -356,3 +356,4 @@ The below are all bugs that were faced throughout the development of the budget 
 | Duplicate goal entries                 | Setting a budget goal multiple times created duplicates in the Google Sheet.                          | Added logic in `budgets.py` to check if a goal already exists before creating new rows.              |
 | Colour formatting not displaying       | The red/green colour codes were not appearing correctly in the Heroku terminal.                       | Switched to using `typer.colors` for consistent colour output.                         |
 | Terminal output overflow on mobile     | On smaller screens - text in the web terminal overflowed outside the view area.                        | Added CSS rules to make the terminal container scrollable and responsive.                             |
+
