@@ -40,7 +40,7 @@ The overall goal here is for users to have an easy way to manage their money and
 As site owner the overall goal is to provide a straightforward and easy to use tool that helps people manage their budgets. I want to make sure the app runs correctly and keeps data safe.
 
 ## User Experience
-The budget planner is designed to be easy to follow and understand. When users open the web terminal, they are guided through simple prompts such as signing up, logging in, and adding transactions. The system gives clear feedback and colour-coded results. So users always know if they are over or under budget. It also works well on both desktop and mobile devices to give a smooth experience wherever it�s used.
+The budget planner is designed to be easy to follow and understand. When users open the web terminal, they are guided through simple prompts such as signing up, logging in, and adding transactions. The system gives clear feedback and colour-coded results. So users always know if they are over or under budget. It also works well on both desktop and mobile devices to give a smooth experience wherever its used.
 
 ### Target Audience 
 The Budget Planner is suitable for students, professionals, or families who need a to plan n easy way to plan budgets. The app is also useful for anyone new to budgeting who prefers a clear and friendly system without over complicated financial features.
@@ -78,10 +78,10 @@ The features available to all regular users can be seen in the below table. A us
 
 | Command | What it does | Key options | Example |
 |---|---|---|---|
-| `signup` | Create an account | � | `bp> signup` |
-| `login` | Sign in (sets session) | � | `bp> login` |
+| `signup` | Create an account | - | `bp> signup` |
+| `login` | Sign in (sets session) | - | `bp> login` |
 | `change-password` | Change your password | `--current`, `--new`, `--confirm` | `bp> change-password` |
-| `logout` | Sign out (clears session) | � | `bp> logout` |
+| `logout` | Sign out (clears session) | - | `bp> logout` |
 | `add-txn` | Add a transaction | `--date YYYY-MM-DD`, `--category`, `--amount`, `--note` | `bp> add-txn` |
 | `list-txns` | Show recent transactions | `--date YYYY-MM-DD`, `--limit` | `bp> list-txns --limit 20` |
 | `sum-month` | Show monthly total | `--month YYYY-MM` | `bp> sum-month --month 2025-10` |
@@ -89,9 +89,9 @@ The features available to all regular users can be seen in the below table. A us
 | `set-goal` | Set a monthly goal | `--month YYYY-MM`, `--category`, `--amount` | `bp> set-goal --month 2025-10 --category groceries --amount 50` |
 | `list-goals` | Show your goals | `--month YYYY-MM` (optional) | `bp> list-goals --month 2025-10` |
 | `budget-status` | Compare goals vs spend (diff color-coded) | `--month YYYY-MM` | `bp> budget-status --month 2025-10` |
-| `whoami` | Show your account info | � | `bp> whoami` |
-| `exit` | exit (ends session) | � | `bp> exit` |
-| `menu` | Show menu/instructions | � | `bp> menu` |
+| `whoami` | Show your account info | - | `bp> whoami` |
+| `exit` | exit (ends session) | - | `bp> exit` |
+| `menu` | Show menu/instructions | - | `bp> menu` |
 
 #### Login 
 Please see the below images relating to login. A user types "login" followed by being asked to enter an email address. Then a password is requested, after this a message is shown to confirm you have logged in successfully or unsuccesfully. Please note password field looks empty due to password hash feature, this is done to protect user entrys. 
@@ -155,7 +155,7 @@ An editor has all the regular features at their disposal for personal details if
 
 | Capability | Command/How | Example |
 |---|---|---|
-| Act on another user�s data | Pass `--email` to self-scoped commands | `list-txns --email user@example.com`; `list-goals --email user@example.com --month 2025-10`; `sum-month --email user@example.com --month 2025-10`; `summary --email user@example.com`; `budget-status --email user@example.com --month 2025-10`; `whoami --email user@example.com` |
+| Act on another users data | Pass `--email` to self-scoped commands | `list-txns --email user@example.com`; `list-goals --email user@example.com --month 2025-10`; `sum-month --email user@example.com --month 2025-10`; `summary --email user@example.com`; `budget-status --email user@example.com --month 2025-10`; `whoami --email user@example.com` |
 | Manage roles | `set-role --email <user> --role editor\|user` | `set-role --email user@example.com --role editor` |
 | List users | `list-users [--limit N]` | `list-users --limit 10` |
 
@@ -183,12 +183,12 @@ Some additional features of how the budget planner application behaves behind th
 - Roles are in the `Role` sheet (`email`, `role`). Missing entries default to `user`. This is an important feature as to differentiate between permissions.
 - Session variables (web terminal): `BP_EMAIL` (logged-in user), `BP_ROLE` (editor/user).
 - Headings and separators are styled for readability. Key figures/information are also highlighted for the same reason.
-- Added Terminal features for UX: `help` and `help <command>`, typos suggest �Did you mean ��, `Ctrl+C` cancels prompts; after login.
+- Added Terminal features for UX: `help` and `help <command>`, typos suggest Did you mean, `Ctrl+C` cancels prompts; after login.
 - Commands use the session email by default as this is better practice then a user having to constantly confirm who they are.
 
 ### App flow logic 
-The below diagram shows how the app works from start to finish. You open the budget planner and either sign up or log in. After a successful login, the app retains the user information so you don�t need to enter your email again. From there you can choose commands like adding a transaction, listing transactions, setting or listing goals, checking budget status (with psotive/negative differences), viewing a summary, or changing your password. 
-You can also show the menu, log out to end your session, or exit to close the terminal. If you are an editor, you also get extra options like listing users and setting roles, and you can act on another user�s data when needed.
+The below diagram shows how the app works from start to finish. You open the budget planner and either sign up or log in. After a successful login, the app retains the user information so you dont need to enter your email again. From there you can choose commands like adding a transaction, listing transactions, setting or listing goals, checking budget status (with psotive/negative differences), viewing a summary, or changing your password. 
+You can also show the menu, log out to end your session, or exit to close the terminal. If you are an editor, you also get extra options like listing users and setting roles, and you can act on another users data when needed.
 
 ![App Flow Logic](assets/images/design/app-flow-logic.png)
 
