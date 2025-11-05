@@ -150,9 +150,7 @@ def onboarding() -> None:
     """
     while True:
         try:
-            choice = input(
-                "Start by typing 'login' or 'signup' [login/signup]: "
-            ).strip().lower()
+            choice = input("login/signup: ").strip().lower()
         except (EOFError, KeyboardInterrupt):
             print("")
             return
