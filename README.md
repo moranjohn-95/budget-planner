@@ -442,14 +442,16 @@ Your app will be live at: https://your-app-name.herokuapp.com/terminal.html
 - [Google Sheets API](https://developers.google.com/sheets/api) - API and authentication setup.
 - [Heroku Dev Center](https://devcenter.heroku.com/) - Buildpacks and deployment help.
 - [node-pty](https://github.com/microsoft/node-pty) - PTY bridge used by the web terminal.
+- [Fluent Python](https://books.google.ie/books/about/Fluent_Python.html?id=bIZHCgAAQBAJ&source=kp_cover&redir_esc=y) - (Book) Learning materials and coding tips.
+- [W3Schools](https://www.w3schools.com/) - General troubleshooting and quick references.
+- [P3_expense_tracker](https://github.com/Code-Institute-Submissions/p3_expense_tracker) - Deployment section of README file was used as a guide.
 
 ### Content Credits
 
 - [am i responsive](https://ui.dev/amiresponsive) - Responsive mockup tool used for the screenshot.
 - [Markdown Guide](https://www.markdownguide.org/) - Help with table and formatting.
-- [W3Schools](https://www.w3schools.com/) - General troubleshooting and quick references.
 
 ### Acknowledgements
 
-- Thanks to Code Institute mentors, tutors and the peer community for support during this project.
+- All Code Institute Lecturers and Staff - for the continued support during this project
 
