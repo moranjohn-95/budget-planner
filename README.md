@@ -30,8 +30,6 @@ View the live website here: [The Budget Planner](https://budget-planner-p3-2560f
   - [Bugs](#bugs)
 - [Deployment](#deployment)
   - [Heroku Deployment](#heroku-deployment)
-  - [How to Fork](#how-to-fork)
-  - [How to Clone](#how-to-clone)
 - [Credits](#credits)
   - [Content Credits](#content-credits)
   - [Acknowledgements](#acknowledgements)
