@@ -63,6 +63,9 @@ We look at user stories more in testing further brlow.
 | **Stay Logged In**          | I Dont want to have to keep logging in after each input.                                |
 | **Logout Option**           | I want to be able to log out when I finish, so I know my account is secure.    | 
 
+## Design 
+Seen as the application runs entirely in the terminal, the layout was primarily designed to be easy to navigate. Headings and sections are clearly spaced to improve readability and important parts of the output use colour highlighting for better visuals. Green text is used for success messages or being under budget, while red text indicates errors or overspending. 
+
 ## Features
 The features section below explains all the features available for the budget planner application. Its important to note that while the "editor" or site owner has all the features available that a regular user does. The editor also has additional functionality that is not available to a regular user and for good reason. 
 
