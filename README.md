@@ -5,6 +5,8 @@ An easy to use Budget Planner that can be run in a browser using an interactive 
 ![Responsive layout](assets/images/screenshots/am-i-responsive.png)
 Credit: [am i responsive](https://ui.dev/amiresponsive?url=https://budget-planner-p3-2560f12ec44b.herokuapp.com/terminal.html)
 
+View the live website here: [The Budget Planner](https://budget-planner-p3-2560f12ec44b.herokuapp.com/terminal.html)
+
 ## Table of Contents
 
 - [Project Aims](#project-aims)
