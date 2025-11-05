@@ -1,7 +1,7 @@
 # Budget-Planner-PP3
 
 ![Responsive layout](assets/images/screenshots/am-i-responsive.png)
-Credit: am i responsive
+Credit: [am i responsive](https://ui.dev/amiresponsive?url=https://budget-planner-p3-2560f12ec44b.herokuapp.com/terminal.html)
 
 ## Contents
 
@@ -358,3 +358,86 @@ The below are all bugs that were faced throughout the development of the budget 
 | Colour formatting not displaying       | The red/green colour codes were not appearing correctly in the Heroku terminal.                       | Switched to using `typer.colors` for consistent colour output.                         |
 | Terminal output overflow on mobile     | On smaller screens - text in the web terminal overflowed outside the view area.                        | Added CSS rules to make the terminal container scrollable and responsive.                             |
 
+
+## Deployment
+
+### Local Setup
+
+To run this project locally:
+
+1) Clone the repository (or use the Code Institute Python Essentials Template).
+
+2) Create and activate a virtual environment (Python 3.12 recommended):
+
+3) Install dependencies: (pip install -r requirements.txt)
+
+4) Add `.venv` to your `.gitignore` so the virtual environment is not committed.
+
+### Google Sheet Setup
+
+- Create a Google Cloud project and enable the Google Sheets API and Google Drive API.
+- Create a Service Account and download the JSON key.
+- Save the key as `service_account.json` in the project root (ensure it is in `.gitignore`).
+- In your Google Sheet, click Share and grant access to the `client_email` from your JSON.
+- Create a Google Sheet with these tabs and headers:
+  - `users` -- `user_id, email, password_hash, created_at`
+  - `transactions` -- `txn_id, user_id, date, category, amount, note`
+  - `budgets` -- `budget_id, user_id, month, category_norm, monthly_goal`
+  - `role` -- `email, role`
+
+### Environment Variables
+
+Create a `.env` file in the project root and include:
+
+  - `SHEET_ID`= your_google_sheet_id
+  - `GOOGLE_CREDS_JSON`= your_entire_json_content_on_one_line
+  - `PORT`= 8000
+
+You can find your Google Sheet ID in the sheet URL between `/d/` and `/edit`.
+
+### Running the App Locally
+
+- Run the CLI directly: (python -m python_scripts.budget_planner.index)
+
+- Or run the interactive web terminal (Node.js / node index.js)
+
+Then open `http://localhost:8000/terminal.html` in your browser.
+
+### Version Control
+
+This project uses Git for version control.
+
+### Heroku Deployment
+
+To deploy on Heroku:
+
+1) Ensure these files exist in the repo:
+   - `requirements.txt` (Python dependencies)
+   - `Procfile` (e.g., `web: node index.js`)
+   - `.gitignore` (excludes `.venv` and `service_account.json`)
+
+2) In Heroku, click New → Create New App, choose a unique name and region.
+
+3) Config Vars (Settings → Reveal Config Vars):
+
+| Key | Value |
+| --- | --- |
+| `SHEET_ID` | your_google_sheet_id |
+| `GOOGLE_CREDS_JSON` | paste entire JSON content (one line) |
+| `PORT` | `8000` |
+
+4) Buildpacks (in this order):
+   - Python
+   - Node.js
+
+5) Connect to GitHub (Deploy tab) and link your repository.
+   - Optionally enable Automatic Deploys.
+
+6) Manual Deploy (if needed): click Deploy Branch.
+
+7) Open App when deploy completes.
+
+Your app will be live at:
+
+```
+https://your-app-name.herokuapp.com/terminal.html
