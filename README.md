@@ -1,6 +1,7 @@
 # Budget-Planner-PP3
 
-<p align="center">`n  <img src="assets/images/screenshots/am-i-responsive.png" alt="Responsive layout - am i responsive" />`n  <br/>`n  <em>Responsive layout - credit: am i responsive</em>`n</p>
+![Responsive layout](assets/images/screenshots/am-i-responsive.png)
+Credit: am i responsive
 
 ## Contents
 
