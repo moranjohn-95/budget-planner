@@ -205,6 +205,48 @@ There are many growth possibilites for the budget planner in the future. Below I
 | Alerts/notifications | Optional alerts when a category is close to or over its goal, or when a large transaction is added. |
 | Two-factor login  | Add an extra step during login (code from email/app) for more security. |
 
+## Technologies Used
+**Python 3.12** — main programming language used to build all application logic and command-line functionality.
+
+**Google Sheets API** — used as the external database to store users, transactions, and budget goals securely online.
+
+**Heroku** — platform used to deploy and host the live web terminal version of the project.
+
+**Node.js / Express.js** — used to create the web-based terminal interface that connects to the Python backend.
+
+**Git & GitHub** — version control and repository hosting for tracking changes and project history.
+
+**VS Code** — integrated development environment used for writing and testing code.
+
+
+### Languages Used
+- **Python** - core application logic and CLI.
+
+- **JavaScript** - web terminal frontend and WebSocket bridge.
+
+- **HTML** - structure for the terminal page.
+
+- **CSS** - styles for the terminal page.
+
+### Libraries & Programmes Used
+- **Typer** — library for creating easy-to-use CLI commands.
+
+- **bcrypt** — securely hashes and verifies passwords.
+
+- **gspread** — connects to Google Sheets (project database).
+
+- **google-auth / oauthlib** — authorizes secure access to the Google Sheets API.
+
+- **pandas** — data manipulation and calculations for reports.
+
+- **python-dotenv** — loads environment variables (e.g., API keys).
+
+- **colorama / Typer colors** — coloured text feedback (red for errors, green for success).
+
+- **pytest / coverage** — testing and code coverage.
+
+- **node-pty / ws** — live Python terminal over WebSockets.
+
 ## Testing
 
 ### Code Validation
